@@ -1,0 +1,2555 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>BS·C Senior — 치매 스크리닝</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BS·C Senior">
+<meta name="theme-color" content="#0d2137">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="BS·C Senior — 치매 스크리닝 · 뇌파 통합 분석">
+
+<!-- 홈화면 아이콘 (인라인 SVG base64) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230a1628'/%3E%3Cstop offset='60%25' stop-color='%231a3a5c'/%3E%3Cstop offset='100%25' stop-color='%237ec8c8'/%3E%3C/linearGradient%3E%3ClinearGradient id='wat' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237ec8c8' stop-opacity='0.9'/%3E%3Cstop offset='100%25' stop-color='%230d1f30'/%3E%3C/linearGradient%3E%3CclipPath id='ic'%3E%3Crect width='1024' height='1024' rx='224' ry='224'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg clip-path='url(%23ic)'%3E%3Crect width='1024' height='1024' fill='url(%23sky)'/%3E%3Ccircle cx='720' cy='200' r='80' fill='%23fffde7' opacity='0.9'/%3E%3Ccircle cx='700' cy='185' r='80' fill='%231a3a5c' opacity='0.5'/%3E%3Cpath d='M0 600 Q120 500 250 540 Q380 490 512 520 Q640 490 780 530 Q900 500 1024 520 L1024 700 L0 700Z' fill='%230d2035'/%3E%3Crect x='0' y='620' width='1024' height='404' fill='url(%23wat)'/%3E%3Cpolygon points='0,625 80,480 160,625' fill='%23051520'/%3E%3Cpolygon points='120,628 210,460 300,628' fill='%23061822'/%3E%3Cpolygon points='724,625 820,462 916,625' fill='%23051520'/%3E%3Cpolygon points='864,628 950,470 1024,628' fill='%23061822'/%3E%3Ctext x='512' y='900' font-family='Georgia,serif' font-size='72' font-weight='900' fill='white' text-anchor='middle' opacity='0.9'%3ESenior%3C/text%3E%3C/g%3E%3C/svg%3E">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230a1628'/%3E%3Cstop offset='60%25' stop-color='%231a3a5c'/%3E%3Cstop offset='100%25' stop-color='%237ec8c8'/%3E%3C/linearGradient%3E%3CclipPath id='ic'%3E%3Crect width='1024' height='1024' rx='224' ry='224'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg clip-path='url(%23ic)'%3E%3Crect width='1024' height='1024' fill='url(%23sky)'/%3E%3Ccircle cx='720' cy='200' r='80' fill='%23fffde7' opacity='0.9'/%3E%3Cpath d='M0 600 Q256 500 512 540 Q768 490 1024 520 L1024 700 L0 700Z' fill='%230d2035'/%3E%3Crect x='0' y='620' width='1024' height='404' fill='%230d2f45'/%3E%3Ctext x='512' y='900' font-family='Georgia,serif' font-size='72' font-weight='900' fill='white' text-anchor='middle' opacity='0.9'%3ESenior%3C/text%3E%3C/g%3E%3C/svg%3E">
+
+<!-- PWA 매니페스트 인라인 -->
+<script>
+window.addEventListener('load', () => {
+  const manifest = {
+    name: "BS·C Senior — 치매 스크리닝",
+    short_name: "BS·C Senior",
+    description: "뇌파 통합 치매 스크리닝 · 뇌훈련 게임",
+    start_url: "./",
+    display: "standalone",
+    orientation: "portrait",
+    background_color: "#0d2137",
+    theme_color: "#0d2137",
+    icons: [{
+      src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230a1628'/%3E%3Ccircle cx='360' cy='100' r='50' fill='%23fffde7'/%3E%3Cpath d='M0 300 Q128 240 256 270 Q384 240 512 260 L512 360 L0 360Z' fill='%230d2035'/%3E%3Crect x='0' y='310' width='512' height='202' fill='%23193d5c'/%3E%3C/svg%3E",
+      sizes: "512x512", type: "image/svg+xml", purpose: "any maskable"
+    }]
+  };
+  const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+  const link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = URL.createObjectURL(blob);
+  document.head.appendChild(link);
+});
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:wght@700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f3f0;
+  --surface: #ffffff;
+  --navy: #1a1035;
+  --navy2: #2d1f5e;
+  --teal: #0891b2;
+  --teal-light: #e0f7fa;
+  --gold: #b45309;
+  --gold-light: #fef3c7;
+  --rose: #be123c;
+  --rose-light: #fff1f2;
+  --green: #15803d;
+  --green-light: #dcfce7;
+  --text: #1e1b2e;
+  --dim: #6b7280;
+  --border: #e5e7eb;
+  --shadow: 0 4px 24px rgba(26,16,53,0.08);
+  --shadow-lg: 0 12px 48px rgba(26,16,53,0.14);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* 페이지 */
+.page { display:none; min-height:100vh; flex-direction:column; }
+.page.active { display:flex; }
+
+/* ===== 시작 페이지 ===== */
+#page-start {
+  background: #0d2137;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* 자연풍경 SVG 배경 */
+#page-start .nature-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  pointer-events: none !important;
+  z-index: 0;
+  user-select: none;
+}
+
+/* 오버레이 (텍스트 가독성) */
+#page-start::after {
+  content:'';
+  position:absolute; inset:0;
+  background: linear-gradient(
+    180deg,
+    rgba(13,33,55,0.3) 0%,
+    rgba(13,33,55,0.55) 40%,
+    rgba(13,33,55,0.75) 70%,
+    rgba(13,33,55,0.92) 100%
+  );
+  pointer-events:none;
+  z-index: 1;
+}
+
+.start-wrap {
+  position:relative; z-index:3;
+  max-width: 480px; width:100%;
+  text-align: center;
+}
+
+/* BS·C Senior 아이콘 */
+.senior-icon {
+  width: 88px; height: 88px;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 0 auto 20px;
+  box-shadow: 0 8px 32px rgba(8,145,178,0.3);
+}
+
+.brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 6px 14px;
+  margin-bottom: 24px;
+}
+
+.brand-badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+.brand-badge-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 2px;
+}
+
+.start-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 6vw, 3rem);
+  color: white;
+  line-height: 1.15;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.start-sub {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 40px;
+  line-height: 1.6;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+}
+
+/* 사용자 선택 카드 */
+.user-select {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.user-card {
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 24px 16px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  text-align: center;
+}
+
+.user-card:hover {
+  background: rgba(8,145,178,0.15);
+  border-color: var(--teal);
+  transform: translateY(-4px);
+}
+
+.user-card.selected {
+  background: rgba(8,145,178,0.2);
+  border-color: var(--teal);
+  box-shadow: 0 0 0 1px var(--teal), 0 8px 24px rgba(8,145,178,0.2);
+}
+
+.user-card-emoji { font-size: 2rem; margin-bottom: 8px; }
+.user-card-name { font-size: 0.9rem; font-weight: 700; color: white; margin-bottom: 4px; }
+.user-card-desc { font-size: 0.72rem; color: rgba(255,255,255,0.35); line-height: 1.4; }
+
+/* 정보 입력 */
+.info-fields { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+
+.s-input {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 14px 18px;
+  color: white;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.s-input::placeholder { color: rgba(255,255,255,0.25); }
+.s-input:focus { border-color: var(--teal); }
+.s-input option { background: var(--navy); }
+
+.input-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.start-btn {
+  width: 100%;
+  background: var(--teal);
+  border: none;
+  color: white;
+  padding: 18px;
+  border-radius: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+
+.start-btn:hover { background: #0e7490; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(8,145,178,0.4); }
+
+.disclaimer {
+  margin-top: 20px;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.2);
+  line-height: 1.6;
+}
+
+/* 검사 기능 안내 */
+.feature-list {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.feature-item {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.feature-icon { font-size: 1.2rem; margin-bottom: 4px; }
+.feature-label { font-size: 0.65rem; color: rgba(255,255,255,0.35); line-height: 1.3; }
+
+/* ===== 검사 페이지 ===== */
+#page-test { background: var(--bg); }
+
+.test-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: sticky; top:0; z-index:10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.test-header-logo {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.prog-wrap { flex:1; }
+
+.prog-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--dim);
+  margin-bottom: 4px;
+}
+
+.prog-bar {
+  height: 5px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--navy2));
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+/* 섹션 배너 */
+.section-banner {
+  margin: 20px 20px 0;
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: white;
+}
+
+.section-banner-icon { font-size: 1.8rem; }
+.section-banner-name { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+.section-banner-desc { font-size: 0.75rem; opacity: 0.45; }
+
+/* 문항 카드 */
+.q-area { padding: 20px; flex:1; }
+
+.q-card {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.q-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--dim);
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+
+.q-instr {
+  font-size: 0.82rem;
+  color: var(--teal);
+  background: var(--teal-light);
+  padding: 9px 14px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.q-text {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: 700;
+  margin-bottom: 24px;
+  line-height: 1.55;
+}
+
+/* 선택지 */
+.opts { display:flex; flex-direction:column; gap:9px; }
+
+.opt-btn {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  text-align: left;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.92rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.opt-btn:hover { border-color: var(--teal); background: var(--teal-light); transform: translateX(4px); }
+.opt-btn.selected { border-color: var(--teal); background: var(--teal-light); color: var(--teal); font-weight: 700; }
+.opt-btn.correct { border-color: var(--green); background: var(--green-light); color: var(--green); }
+.opt-btn.wrong { border-color: var(--rose); background: var(--rose-light); color: var(--rose); }
+
+.opt-letter {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.opt-btn.selected .opt-letter { background: var(--teal); color: white; }
+.opt-btn.correct .opt-letter { background: var(--green); color: white; }
+.opt-btn.wrong .opt-letter { background: var(--rose); color: white; }
+
+/* 입력형 */
+.s-answer {
+  width: 100%;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 1.05rem;
+  outline: none;
+  transition: border-color 0.2s;
+  color: var(--text);
+}
+
+.s-answer:focus { border-color: var(--teal); background: var(--teal-light); }
+
+/* 시계 그리기 */
+.clock-area {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.clock-svg { cursor: crosshair; border-radius: 50%; touch-action: none; }
+.clock-hint { font-size: 0.78rem; color: var(--dim); margin-top: 8px; }
+.clock-clear-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--dim);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  margin-top: 10px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 피드백 */
+.feedback {
+  margin-top: 14px;
+  padding: 11px 16px;
+  border-radius: 10px;
+  font-size: 0.83rem;
+  font-weight: 500;
+  display: none;
+  animation: pop 0.2s ease;
+}
+
+@keyframes pop { from{transform:scale(0.96);opacity:0} to{transform:scale(1);opacity:1} }
+.feedback.ok { background: var(--green-light); color: #166534; border: 1px solid #bbf7d0; }
+.feedback.ng { background: var(--rose-light); color: #9f1239; border: 1px solid #fecdd3; }
+
+.test-footer {
+  padding: 14px 20px 32px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-next {
+  background: var(--navy);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-next:hover { background: var(--navy2); transform: translateY(-1px); }
+.btn-next:disabled { opacity: 0.35; cursor: default; transform: none; }
+
+.btn-skip {
+  background: transparent;
+  color: var(--dim);
+  border: 1px solid var(--border);
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-skip:hover { background: var(--bg); }
+
+/* 보호자 섹션 구분 */
+.caregiver-banner {
+  margin: 20px 20px 0;
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: white;
+}
+
+/* ===== 리포트 ===== */
+#page-report { background: var(--bg); }
+
+.report-header {
+  background: var(--navy);
+  color: white;
+  padding: 36px 24px 28px;
+}
+
+.report-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.report-brand-icon {
+  width: 32px; height: 32px;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.report-brand-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 2px;
+}
+
+.report-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.4rem, 4vw, 1.9rem);
+  margin-bottom: 4px;
+}
+
+.report-meta { font-size: 0.82rem; opacity: 0.4; }
+
+.report-body { padding: 24px; max-width: 720px; margin: 0 auto; }
+
+/* 위험도 카드 */
+.risk-card {
+  border-radius: 20px;
+  padding: 32px;
+  text-align: center;
+  margin-bottom: 22px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.risk-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:5px;
+}
+
+.risk-low    { background: #f0fdf4; }
+.risk-low::before    { background: linear-gradient(90deg, #22c55e, #16a34a); }
+.risk-mid    { background: #fffbeb; }
+.risk-mid::before    { background: linear-gradient(90deg, #f59e0b, #d97706); }
+.risk-high   { background: #fff1f2; }
+.risk-high::before   { background: linear-gradient(90deg, #f43f5e, #be123c); }
+
+.risk-emoji { font-size: 3.5rem; margin-bottom: 12px; display: block; }
+.risk-level { font-size: 1.6rem; font-weight: 900; margin-bottom: 6px; }
+.risk-score { font-size: 3rem; font-weight: 900; line-height: 1; margin-bottom: 8px; }
+.risk-score span { font-size: 1rem; font-weight: 400; opacity: 0.5; }
+.risk-desc  { font-size: 0.88rem; color: var(--dim); line-height: 1.6; max-width: 400px; margin: 0 auto; }
+
+/* 영역별 점수 */
+.domain-section { margin-bottom: 22px; }
+
+.domain-card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 20px 22px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.domain-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.domain-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.domain-name { font-weight: 700; font-size: 0.92rem; }
+.domain-sub  { font-size: 0.72rem; color: var(--dim); }
+
+.domain-bar-wrap {
+  display: flex; align-items: center; gap: 12px;
+}
+
+.domain-bar-bg {
+  flex:1; height: 10px;
+  background: var(--bg);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.domain-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 1s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.domain-score-num { font-size: 0.88rem; font-weight: 700; min-width: 38px; text-align: right; }
+.domain-level-badge { font-size: 0.7rem; padding: 3px 10px; border-radius: 20px; font-weight: 600; margin-left: auto; }
+
+/* 보호자 관찰 결과 */
+.caregiver-result {
+  background: #faf5ff;
+  border: 1px solid #e9d5ff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 22px;
+}
+
+.caregiver-result-title {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: #7e22ce;
+  font-family: 'Space Mono', monospace;
+  margin-bottom: 14px;
+}
+
+.caregiver-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.caregiver-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+/* 뇌파 입력 */
+.eeg-section {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 22px;
+}
+
+.eeg-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.eeg-sub { font-size: 0.78rem; color: var(--dim); margin-bottom: 18px; }
+
+.eeg-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px; }
+
+.eeg-card {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 12px;
+  text-align: center;
+  display: flex; flex-direction: column; gap: 5px;
+  transition: border-color 0.2s;
+}
+
+.eeg-card:focus-within { border-color: var(--teal); background: var(--teal-light); }
+.eeg-card-icon { font-size: 1.3rem; }
+.eeg-card-name { font-size: 0.75rem; font-weight: 700; line-height: 1.3; }
+.eeg-card-unit { font-size: 0.7rem; color: var(--teal); font-weight: 600; }
+.eeg-input-num { width:100%; text-align:center; font-size:1.1rem; font-weight:700; padding:8px; background:transparent; border:none; outline:none; color:var(--text); font-family:'Space Mono',monospace; }
+.eeg-card-ref { font-size: 0.62rem; color: var(--dim); line-height: 1.4; }
+
+.eeg-btn {
+  width:100%; background: linear-gradient(135deg, var(--teal), var(--navy2));
+  color:white; border:none; padding:14px; border-radius:12px;
+  font-family:'Noto Sans KR',sans-serif; font-size:0.95rem; font-weight:700;
+  cursor:pointer; transition:all 0.2s;
+}
+
+.eeg-btn:hover { opacity:0.9; transform:translateY(-1px); }
+
+/* 통합 분석 */
+.integrated {
+  background: var(--navy);
+  border-radius: 20px;
+  padding: 24px;
+  color: white;
+  margin-bottom: 22px;
+  display: none;
+}
+
+.integrated-title { font-size:0.7rem; letter-spacing:2px; opacity:0.4; margin-bottom:16px; font-family:'Space Mono',monospace; }
+
+.insight-item {
+  display:flex; gap:12px; margin-bottom:12px;
+  padding:14px; background:rgba(255,255,255,0.05); border-radius:12px;
+}
+
+.insight-icon { font-size:1.1rem; flex-shrink:0; }
+.insight-text { font-size:0.83rem; line-height:1.6; opacity:0.85; }
+.insight-text strong { color:#67e8f9; }
+
+/* 권고 사항 */
+.recommend-section {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 22px;
+}
+
+.recommend-title { font-weight:700; font-size:0.95rem; margin-bottom:16px; }
+
+.recommend-item {
+  display:flex; gap:14px; padding:14px;
+  border-radius:12px; margin-bottom:10px;
+  border: 1px solid var(--border);
+  align-items: flex-start;
+}
+
+.recommend-icon { font-size:1.2rem; flex-shrink:0; }
+.recommend-name { font-weight:600; font-size:0.88rem; margin-bottom:3px; }
+.recommend-desc { font-size:0.78rem; color:var(--dim); line-height:1.5; }
+
+.urgent-box {
+  background: var(--rose-light);
+  border: 1.5px solid #fecdd3;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 22px;
+  display: none;
+}
+
+.urgent-title { font-weight:700; color: var(--rose); margin-bottom:8px; font-size:0.92rem; }
+.urgent-desc  { font-size:0.82rem; color: #9f1239; line-height:1.6; }
+
+/* ===== 종합 점수 카드 ===== */
+.total-score-card {
+  background: var(--navy);
+  border-radius: 24px;
+  padding: 32px 28px;
+  margin-bottom: 22px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.total-score-card::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(8,145,178,0.2) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(124,58,237,0.15) 0%, transparent 50%);
+  pointer-events:none;
+}
+.total-score-inner { position:relative; z-index:1; }
+.total-score-label { font-family:'Space Mono',monospace; font-size:0.65rem; letter-spacing:3px; opacity:0.4; margin-bottom:20px; }
+.total-score-main { display:flex; align-items:center; gap:24px; margin-bottom:24px; }
+.gauge-wrap { position:relative; width:110px; height:110px; flex-shrink:0; }
+.gauge-svg { transform:rotate(-90deg); }
+.gauge-bg { fill:none; stroke:rgba(255,255,255,0.08); stroke-width:10; }
+.gauge-fill { fill:none; stroke-width:10; stroke-linecap:round; transition:stroke-dashoffset 1.2s cubic-bezier(0.34,1.56,0.64,1); }
+.gauge-text { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.gauge-score { font-size:1.8rem; font-weight:900; line-height:1; font-family:'Space Mono',monospace; }
+.gauge-max { font-size:0.65rem; opacity:0.4; margin-top:2px; }
+.total-score-info { flex:1; }
+.grade-badge { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:100px; font-size:0.85rem; font-weight:700; margin-bottom:8px; }
+.grade-1 { background:rgba(34,197,94,0.2);  color:#4ade80; }
+.grade-2 { background:rgba(59,130,246,0.2); color:#60a5fa; }
+.grade-3 { background:rgba(251,191,36,0.2); color:#fbbf24; }
+.grade-4 { background:rgba(249,115,22,0.2); color:#fb923c; }
+.grade-5 { background:rgba(239,68,68,0.2);  color:#f87171; }
+.total-score-desc { font-size:0.82rem; opacity:0.55; line-height:1.6; }
+.score-breakdown { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.breakdown-item { background:rgba(255,255,255,0.06); border-radius:12px; padding:12px 14px; }
+.breakdown-label { font-size:0.65rem; opacity:0.4; font-family:'Space Mono',monospace; letter-spacing:1px; margin-bottom:6px; }
+.breakdown-bar-wrap { display:flex; align-items:center; gap:8px; }
+.breakdown-bar-bg { flex:1; height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden; }
+.breakdown-bar-fill { height:100%; border-radius:3px; transition:width 1s cubic-bezier(0.34,1.56,0.64,1); }
+.breakdown-score { font-size:0.78rem; font-weight:700; font-family:'Space Mono',monospace; min-width:36px; text-align:right; }
+.breakdown-weight { font-size:0.6rem; opacity:0.35; margin-top:3px; }
+.eeg-pending { background:rgba(255,255,255,0.04); border:1px dashed rgba(255,255,255,0.15); border-radius:10px; padding:10px 14px; font-size:0.75rem; opacity:0.5; text-align:center; margin-top:8px; }
+.grade-bar-section { display:flex; gap:4px; margin-top:16px; }
+.grade-bar-item { flex:1; height:6px; border-radius:3px; opacity:0.3; transition:opacity 0.3s, transform 0.3s; }
+.grade-bar-item.active { opacity:1; transform:scaleY(1.5); }
+
+/* 버튼 */
+.report-actions { display:flex; gap:12px; margin-bottom:48px; flex-wrap:wrap; }
+
+.btn-print {
+  flex:1; background:var(--navy); color:white; border:none;
+  padding:16px; border-radius:12px; font-family:'Noto Sans KR',sans-serif;
+  font-size:0.92rem; font-weight:700; cursor:pointer; transition:all 0.2s;
+}
+
+.btn-print:hover { opacity:0.9; }
+
+.btn-restart {
+  flex:1; background:transparent; color:var(--text); border:1.5px solid var(--border);
+  padding:16px; border-radius:12px; font-family:'Noto Sans KR',sans-serif;
+  font-size:0.92rem; cursor:pointer; transition:all 0.2s;
+}
+
+.btn-restart:hover { background:var(--bg); }
+
+/* ===== 뇌훈련 게임 ===== */
+.brain-game-section { background:var(--surface); border-radius:20px; padding:24px; box-shadow:var(--shadow); border:1px solid var(--border); margin-bottom:22px; overflow:hidden; }
+.brain-game-header { margin-bottom:16px; }
+.brain-game-title { font-size:1rem; font-weight:700; margin-bottom:3px; }
+.brain-game-sub { font-size:0.75rem; color:var(--dim); }
+.game-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:18px; }
+.game-tab { background:var(--bg); border:1.5px solid var(--border); border-radius:100px; padding:7px 14px; font-size:0.78rem; font-family:'Noto Sans KR',sans-serif; cursor:pointer; transition:all 0.2s; color:var(--dim); font-weight:500; }
+.game-tab.active { background:var(--navy); border-color:var(--navy); color:white; font-weight:700; }
+.game-area { background:var(--bg); border-radius:16px; padding:24px; min-height:280px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; position:relative; }
+.game-score-bar { display:flex; justify-content:space-between; width:100%; margin-bottom:16px; font-family:'Space Mono',monospace; font-size:0.75rem; color:var(--dim); }
+.game-score-val { color:var(--navy); font-weight:700; font-size:0.9rem; }
+.game-display { font-size:clamp(2rem,8vw,3.5rem); font-weight:900; color:var(--navy); letter-spacing:8px; margin:16px 0; font-family:'Space Mono',monospace; min-height:60px; display:flex; align-items:center; justify-content:center; }
+.game-input { width:100%; max-width:240px; background:white; border:2px solid var(--border); border-radius:12px; padding:12px 16px; font-size:1.2rem; font-weight:700; text-align:center; font-family:'Space Mono',monospace; outline:none; transition:border-color 0.2s; color:var(--navy); }
+.game-input:focus { border-color:var(--teal); }
+.game-btn { background:var(--navy); color:white; border:none; padding:12px 28px; border-radius:100px; font-family:'Noto Sans KR',sans-serif; font-size:0.9rem; font-weight:700; cursor:pointer; transition:all 0.2s; margin-top:12px; }
+.game-btn:hover { background:var(--navy2); transform:translateY(-2px); }
+.game-btn.secondary { background:transparent; color:var(--dim); border:1.5px solid var(--border); margin-left:8px; }
+.game-btn.secondary:hover { background:var(--bg); transform:none; }
+.game-msg { font-size:0.85rem; color:var(--dim); margin-top:10px; line-height:1.5; }
+.game-result-ok { color:var(--green); font-weight:700; font-size:1rem; }
+.game-result-ng { color:var(--rose); font-weight:700; font-size:1rem; }
+.stroop-word { font-size:clamp(2rem,8vw,3rem); font-weight:900; margin:16px 0; transition:color 0.2s; }
+.stroop-opts { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; width:100%; max-width:320px; margin-top:8px; }
+.stroop-btn { padding:14px; border-radius:12px; border:2px solid; font-size:0.9rem; font-weight:700; cursor:pointer; transition:all 0.15s; font-family:'Noto Sans KR',sans-serif; }
+.simon-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin:16px 0; }
+.simon-btn { width:80px; height:80px; border-radius:16px; border:none; cursor:pointer; opacity:0.35; transition:opacity 0.15s,transform 0.1s; font-size:1.5rem; }
+.simon-btn.lit { opacity:1; transform:scale(1.08); box-shadow:0 0 20px rgba(0,0,0,0.2); }
+.spot-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; width:100%; }
+.spot-panel { background:white; border-radius:12px; padding:16px; border:2px solid var(--border); }
+.spot-panel-title { font-size:0.7rem; color:var(--dim); margin-bottom:10px; letter-spacing:1px; }
+.spot-items { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+.spot-item { font-size:1.6rem; cursor:pointer; padding:4px; border-radius:8px; transition:all 0.15s; border:2px solid transparent; }
+.spot-item:hover { background:var(--bg); }
+.spot-item.correct-pick { border-color:var(--green); background:var(--green-light); }
+.spot-item.wrong-pick   { border-color:var(--rose);  background:var(--rose-light); }
+.level-badge { display:inline-flex; align-items:center; gap:4px; background:var(--navy); color:white; padding:4px 12px; border-radius:100px; font-size:0.7rem; font-family:'Space Mono',monospace; margin-bottom:8px; }
+@media print { .brain-game-section { display:none !important; } }
+
+@media print {
+  .report-actions, .eeg-section { display:none !important; }
+  .integrated { display:block !important; }
+}
+
+@media (max-width:480px) {
+  .user-select { grid-template-columns:1fr; }
+  .eeg-grid-3 { grid-template-columns:1fr; }
+  .feature-list { grid-template-columns:repeat(3,1fr); }
+  .input-row-2 { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 시작 페이지 ===== -->
+<div id="page-start" class="page active">
+
+  <!-- 자연풍경 SVG 배경 -->
+  <svg class="nature-bg" viewBox="0 0 390 844" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="pointer-events:none;position:absolute;inset:0;width:100%;height:100%;z-index:0;">
+    <defs>
+      <!-- 하늘 그라디언트 (새벽/황혼) -->
+      <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%"   stop-color="#0a1628"/>
+        <stop offset="25%"  stop-color="#0d2137"/>
+        <stop offset="55%"  stop-color="#1a3a5c"/>
+        <stop offset="75%"  stop-color="#2d6a8f"/>
+        <stop offset="90%"  stop-color="#4a90a4"/>
+        <stop offset="100%" stop-color="#7ec8c8"/>
+      </linearGradient>
+      <!-- 물 그라디언트 -->
+      <linearGradient id="waterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%"   stop-color="#7ec8c8" stop-opacity="0.9"/>
+        <stop offset="40%"  stop-color="#2d6a8f" stop-opacity="0.95"/>
+        <stop offset="100%" stop-color="#0d1f30"/>
+      </linearGradient>
+      <!-- 달빛 반사 -->
+      <radialGradient id="moonGlow" cx="65%" cy="18%" r="20%">
+        <stop offset="0%"  stop-color="#fffde7" stop-opacity="0.5"/>
+        <stop offset="50%" stop-color="#fff9c4" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#fff9c4" stop-opacity="0"/>
+      </radialGradient>
+      <!-- 수면 반사 -->
+      <radialGradient id="reflectGrad" cx="65%" cy="10%" r="30%">
+        <stop offset="0%"  stop-color="#fffde7" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="#fffde7" stop-opacity="0"/>
+      </radialGradient>
+      <!-- 안개 -->
+      <filter id="fog">
+        <feGaussianBlur stdDeviation="6" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <!-- 나무 글로우 -->
+      <filter id="treeGlow">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <!-- 물결 클리핑 -->
+      <clipPath id="waterClip">
+        <rect x="0" y="490" width="390" height="354"/>
+      </clipPath>
+    </defs>
+
+    <!-- ① 하늘 -->
+    <rect width="390" height="844" fill="url(#skyGrad)"/>
+
+    <!-- ② 달빛 헤일로 -->
+    <ellipse cx="255" cy="148" rx="90" ry="90" fill="url(#moonGlow)"/>
+
+    <!-- ③ 달 -->
+    <circle cx="255" cy="148" r="28" fill="#fffde7" opacity="0.95"/>
+    <circle cx="248" cy="142" r="28" fill="#1a3a5c" opacity="0.4"/>
+    <!-- 달 크레이터 -->
+    <circle cx="260" cy="138" r="4"  fill="#f5f0d0" opacity="0.3"/>
+    <circle cx="248" cy="156" r="3"  fill="#f5f0d0" opacity="0.25"/>
+    <circle cx="267" cy="152" r="2.5" fill="#f5f0d0" opacity="0.2"/>
+
+    <!-- ④ 별들 -->
+    <g opacity="0.85" fill="#fffde7">
+      <circle cx="30"  cy="40"  r="1.2"/><circle cx="60"  cy="20"  r="0.9"/>
+      <circle cx="90"  cy="55"  r="1.4"/><circle cx="120" cy="30"  r="0.8"/>
+      <circle cx="150" cy="15"  r="1.1"/><circle cx="180" cy="45"  r="0.9"/>
+      <circle cx="20"  cy="80"  r="0.8"/><circle cx="50"  cy="100" r="1.2"/>
+      <circle cx="80"  cy="70"  r="0.7"/><circle cx="110" cy="90"  r="1.0"/>
+      <circle cx="140" cy="60"  r="0.8"/><circle cx="170" cy="85"  r="1.3"/>
+      <circle cx="200" cy="25"  r="0.9"/><circle cx="210" cy="70"  r="0.7"/>
+      <circle cx="300" cy="35"  r="1.1"/><circle cx="330" cy="60"  r="0.9"/>
+      <circle cx="360" cy="25"  r="1.3"/><circle cx="350" cy="90"  r="0.8"/>
+      <circle cx="320" cy="100" r="1.0"/><circle cx="380" cy="55"  r="0.7"/>
+      <circle cx="40"  cy="130" r="0.8"/><circle cx="130" cy="120" r="1.1"/>
+      <circle cx="220" cy="110" r="0.9"/><circle cx="285" cy="125" r="0.7"/>
+      <!-- 반짝이는 큰 별 -->
+      <circle cx="72"  cy="48"  r="2.0" opacity="0.9"/>
+      <circle cx="318" cy="78"  r="1.8" opacity="0.9"/>
+      <circle cx="160" cy="36"  r="1.6" opacity="0.85"/>
+    </g>
+
+    <!-- ⑤ 먼 산맥 (가장 멀리) -->
+    <path d="M0 380 Q40 300 80 320 Q120 290 160 310 Q200 270 240 300 Q280 260 320 290 Q360 270 390 300 L390 420 L0 420Z"
+          fill="#0f2a42" opacity="0.7"/>
+
+    <!-- ⑥ 중간 산맥 -->
+    <path d="M0 400 Q30 340 70 360 Q110 320 150 345 Q190 310 230 340 Q270 315 310 345 Q350 325 390 350 L390 440 L0 440Z"
+          fill="#122f4a" opacity="0.85"/>
+
+    <!-- ⑦ 가까운 산/언덕 -->
+    <path d="M0 430 Q50 380 100 400 Q150 360 200 390 Q250 370 300 400 Q345 380 390 405 L390 500 L0 500Z"
+          fill="#0d2035" opacity="0.95"/>
+
+    <!-- ⑧ 안개 띠 (산과 물 사이) -->
+    <ellipse cx="195" cy="492" rx="250" ry="22" fill="white" opacity="0.08" filter="url(#fog)"/>
+    <ellipse cx="100" cy="498" rx="130" ry="14" fill="white" opacity="0.06" filter="url(#fog)"/>
+    <ellipse cx="310" cy="495" rx="110" ry="12" fill="white" opacity="0.06" filter="url(#fog)"/>
+
+    <!-- ⑨ 호수/강 (수면) -->
+    <rect x="0" y="490" width="390" height="354" fill="url(#waterGrad)"/>
+
+    <!-- ⑩ 달빛 수면 반사 -->
+    <ellipse cx="255" cy="580" rx="60" ry="200" fill="url(#reflectGrad)" opacity="0.5"/>
+    <!-- 반사 줄기 -->
+    <rect x="248" y="495" width="14" height="340" fill="#fffde7" opacity="0.06" rx="7"/>
+
+    <!-- ⑪ 물결 (잔물결) -->
+    <g opacity="0.18" stroke="#7ec8c8" stroke-width="1" fill="none">
+      <path d="M60  530 Q90  526 120 530 Q150 534 180 530"/>
+      <path d="M200 545 Q230 541 260 545 Q290 549 320 545"/>
+      <path d="M30  570 Q70  566 110 570 Q150 574 190 570"/>
+      <path d="M220 590 Q255 586 290 590 Q325 594 360 590"/>
+      <path d="M10  620 Q55  616 100 620 Q145 624 190 620"/>
+      <path d="M210 640 Q250 636 290 640 Q330 644 370 640"/>
+      <path d="M50  670 Q100 666 150 670 Q200 674 250 670"/>
+      <path d="M160 700 Q210 696 260 700 Q310 704 360 700"/>
+      <path d="M20  730 Q80  726 140 730 Q200 734 260 730"/>
+    </g>
+
+    <!-- ⑫ 왼쪽 소나무 숲 (앞) -->
+    <!-- 나무 1 -->
+    <g filter="url(#treeGlow)">
+      <polygon points="0,490 30,370 60,490"  fill="#051520" opacity="0.95"/>
+      <polygon points="5,460 30,370 55,460"  fill="#071c28" opacity="0.9"/>
+      <polygon points="10,440 30,390 50,440" fill="#0a2233" opacity="0.85"/>
+    </g>
+    <!-- 나무 2 -->
+    <g filter="url(#treeGlow)">
+      <polygon points="40,495 75,355 110,495" fill="#061822" opacity="0.95"/>
+      <polygon points="48,465 75,355 102,465" fill="#081e2c" opacity="0.9"/>
+      <polygon points="55,440 75,375 95,440"  fill="#0b2438" opacity="0.85"/>
+    </g>
+    <!-- 나무 3 (작은) -->
+    <polygon points="15,492 38,415 61,492" fill="#040f18" opacity="0.9"/>
+
+    <!-- ⑬ 오른쪽 소나무 숲 -->
+    <!-- 나무 1 -->
+    <g filter="url(#treeGlow)">
+      <polygon points="280,490 315,360 350,490" fill="#051520" opacity="0.95"/>
+      <polygon points="287,462 315,360 343,462" fill="#071c28" opacity="0.9"/>
+      <polygon points="295,440 315,380 335,440" fill="#0a2233" opacity="0.85"/>
+    </g>
+    <!-- 나무 2 -->
+    <g filter="url(#treeGlow)">
+      <polygon points="330,495 360,370 390,495" fill="#061822" opacity="0.95"/>
+      <polygon points="337,465 360,370 383,465" fill="#081e2c" opacity="0.9"/>
+      <polygon points="345,443 360,390 375,443" fill="#0b2438" opacity="0.85"/>
+    </g>
+    <!-- 나무 3 (작은) -->
+    <polygon points="305,492 325,420 345,492" fill="#040f18" opacity="0.9"/>
+
+    <!-- ⑭ 나무 수면 반사 (왼) -->
+    <path d="M0,495 Q15,510 30,530 Q40,560 25,590 Q15,620 0,650"
+          stroke="#071c28" stroke-width="18" fill="none" opacity="0.25"/>
+    <path d="M65,495 Q75,515 70,540 Q65,575 55,610"
+          stroke="#071c28" stroke-width="14" fill="none" opacity="0.2"/>
+    <!-- 나무 수면 반사 (우) -->
+    <path d="M390,495 Q375,510 360,535 Q350,565 365,595 Q375,620 390,650"
+          stroke="#071c28" stroke-width="18" fill="none" opacity="0.25"/>
+    <path d="M325,495 Q315,518 320,545 Q325,578 335,612"
+          stroke="#071c28" stroke-width="14" fill="none" opacity="0.2"/>
+
+    <!-- ⑮ 반딧불이 -->
+    <g fill="#c8ff8c" opacity="0.7">
+      <circle cx="165" cy="462" r="2.2"><animate attributeName="opacity" values="0.7;0.1;0.7" dur="2.3s" repeatCount="indefinite"/></circle>
+      <circle cx="230" cy="448" r="1.8"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="1.8s" repeatCount="indefinite"/></circle>
+      <circle cx="140" cy="475" r="1.5"><animate attributeName="opacity" values="0.5;0.1;0.5" dur="2.8s" repeatCount="indefinite"/></circle>
+      <circle cx="260" cy="470" r="2.0"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="3.1s" repeatCount="indefinite"/></circle>
+      <circle cx="185" cy="482" r="1.4"><animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.1s" repeatCount="indefinite"/></circle>
+    </g>
+
+    <!-- ⑯ 별 반짝임 애니메이션 -->
+    <circle cx="72" cy="48" r="1.5" fill="#fffde7">
+      <animate attributeName="opacity" values="0.9;0.3;0.9" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="318" cy="78" r="1.4" fill="#fffde7">
+      <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+  </svg>
+
+  <div class="start-wrap">
+
+    <!-- 아이콘 -->
+    <div class="senior-icon">
+      <svg width="88" height="88" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1035"/><stop offset="100%" stop-color="#2d1f5e"/></linearGradient>
+          <linearGradient id="sW" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0891b2" stop-opacity="0.3"/><stop offset="50%" stop-color="#0891b2"/><stop offset="100%" stop-color="#0891b2" stop-opacity="0.3"/></linearGradient>
+          <linearGradient id="sB" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0891b2"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient>
+          <filter id="sGlow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <clipPath id="sClip"><rect width="1024" height="1024" rx="224" ry="224"/></clipPath>
+        </defs>
+        <g clip-path="url(#sClip)">
+          <rect width="1024" height="1024" fill="url(#sBg)"/>
+          <path d="M512 185 C460 180 400 195 370 230 C340 260 330 290 335 320 C310 330 285 350 280 385 C270 425 290 460 315 478 C300 500 295 525 305 550 C318 580 345 595 370 595 C375 625 385 655 400 670 C425 695 460 700 490 690 C500 715 506 730 512 735 C518 730 524 715 534 690 C564 700 599 695 624 670 C639 655 649 625 654 595 C679 595 706 580 719 550 C729 525 724 500 709 478 C734 460 754 425 744 385 C739 350 714 330 689 320 C694 290 684 260 654 230 C624 195 564 180 512 185Z" fill="none" stroke="url(#sB)" stroke-width="6" opacity="0.5"/>
+          <polyline points="160,512 220,512 258,390 298,634 336,448 374,556 412,512 450,350 490,672 530,512 568,512 606,420 644,600 682,512 762,512 864,512" fill="none" stroke="url(#sW)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" filter="url(#sGlow)"/>
+          <circle cx="450" cy="350" r="20" fill="#0891b2" opacity="0.9"/>
+          <circle cx="450" cy="350" r="9" fill="white"/>
+          <circle cx="490" cy="672" r="20" fill="#7c3aed" opacity="0.9"/>
+          <circle cx="490" cy="672" r="9" fill="white"/>
+          <text x="512" y="876" font-family="Georgia,serif" font-size="60" font-weight="900" fill="white" text-anchor="middle" opacity="0.85" letter-spacing="2">Senior</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="brand-badge">
+      <div class="brand-badge-dot"></div>
+      <div class="brand-badge-text">BS·C SENIOR · 치매 스크리닝</div>
+    </div>
+
+    <h1 class="start-title">병원 가기 전<br>먼저 확인하세요</h1>
+    <p class="start-sub">MMSE + MoCA 기반 · 뇌파 통합 또는 순수 인지검사 선택</p>
+
+    <!-- ① 검사 모드 선택 -->
+    <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);letter-spacing:2px;margin-bottom:10px;text-align:left;">검사 모드</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+
+      <div class="user-card" id="card-mode-eeg" onclick="selectMode('eeg')" style="border-color:rgba(8,145,178,0.4);background:rgba(8,145,178,0.1);">
+        <div class="user-card-emoji">🌊🧠</div>
+        <div class="user-card-name" style="color:#67e8f9;">뇌파 + 인지 통합</div>
+        <div class="user-card-desc">뉴로스펙 기초율동 +<br>인지검사 종합 점수<br><span style="color:rgba(103,232,249,0.6);font-size:0.65rem;">인지 70% + 뇌파 30%</span></div>
+      </div>
+
+      <div class="user-card" id="card-mode-cog" onclick="selectMode('cog')">
+        <div class="user-card-emoji">🧠</div>
+        <div class="user-card-name">순수 인지검사</div>
+        <div class="user-card-desc">뇌파 없이<br>인지검사만으로<br><span style="color:rgba(255,255,255,0.35);font-size:0.65rem;">100점 만점 환산</span></div>
+      </div>
+
+    </div>
+
+    <!-- ② 응답자 선택 -->
+    <div style="font-size:0.72rem;color:rgba(255,255,255,0.3);letter-spacing:2px;margin-bottom:10px;text-align:left;">응답자</div>
+    <div class="user-select" style="margin-bottom:20px;">
+      <div class="user-card" id="card-self" onclick="selectUser('self')">
+        <div class="user-card-emoji">👴</div>
+        <div class="user-card-name">본인 검사</div>
+        <div class="user-card-desc">본인이 직접<br>검사에 응답</div>
+      </div>
+      <div class="user-card" id="card-both" onclick="selectUser('both')">
+        <div class="user-card-emoji">👨‍👩‍👧</div>
+        <div class="user-card-name">본인 + 보호자</div>
+        <div class="user-card-desc">보호자 관찰<br>항목 추가</div>
+      </div>
+    </div>
+
+    <!-- ③ 정보 입력 -->
+    <div class="info-fields">
+      <input class="s-input" type="text" id="patientName" placeholder="이름">
+      <div class="input-row-2">
+        <input class="s-input" type="number" id="patientAge" placeholder="나이 (세)" min="45" max="100">
+        <select class="s-input" id="patientGender">
+          <option value="">성별</option>
+          <option value="남">남자</option>
+          <option value="여">여자</option>
+        </select>
+      </div>
+      <input class="s-input" type="text" id="caregiverName" placeholder="보호자 이름 (선택)">
+      <input class="s-input" type="text" id="examinerName" placeholder="검사자/기관명 (선택)">
+    </div>
+
+    <button class="start-btn" onclick="startTest()">검사 시작하기 →</button>
+
+    <p class="disclaimer">
+      ※ 이 검사는 의학적 진단이 아닌 참고용 스크리닝입니다.<br>
+      결과에 따라 전문 의료기관 방문을 권고드립니다.
+    </p>
+  </div>
+</div>
+
+<!-- ===== 검사 페이지 ===== -->
+<div id="page-test" class="page">
+  <div class="test-header">
+    <div class="test-header-logo">BS·C Senior</div>
+    <div class="prog-wrap">
+      <div class="prog-label">
+        <span id="sectionName">지남력</span>
+        <span id="progText">1 / 30</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div id="sectionBannerWrap"></div>
+
+  <div class="q-area">
+    <div class="q-card" id="qCard">
+      <div class="q-num" id="qNum">문항 1</div>
+      <div class="q-instr" id="qInstr"></div>
+      <div class="q-text" id="qText"></div>
+      <div id="qOpts"></div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+  </div>
+
+  <div class="test-footer">
+    <button class="btn-skip" onclick="skipQ()">건너뛰기</button>
+    <button class="btn-next" id="btnNext" onclick="nextQ()" disabled>다음 →</button>
+  </div>
+</div>
+
+<!-- ===== 리포트 페이지 ===== -->
+<div id="page-report" class="page">
+  <div class="report-header">
+    <div class="report-brand-row">
+      <div class="report-brand-icon">
+        <svg width="32" height="32" viewBox="0 0 1024 1024"><defs><linearGradient id="rBg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a1035"/><stop offset="100%" stop-color="#2d1f5e"/></linearGradient><linearGradient id="rW" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0891b2" stop-opacity="0.3"/><stop offset="50%" stop-color="#0891b2"/><stop offset="100%" stop-color="#0891b2" stop-opacity="0.3"/></linearGradient><clipPath id="rClip"><rect width="1024" height="1024" rx="224" ry="224"/></clipPath></defs><g clip-path="url(#rClip)"><rect width="1024" height="1024" fill="url(#rBg)"/><polyline points="160,512 220,512 258,390 298,634 336,448 374,556 412,512 450,350 490,672 530,512 568,512 606,420 644,600 682,512 762,512 864,512" fill="none" stroke="url(#rW)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><circle cx="450" cy="350" r="20" fill="#0891b2"/><circle cx="450" cy="350" r="9" fill="white"/></g></svg>
+      </div>
+      <div class="report-brand-text">BS·C SENIOR · 치매 스크리닝 결과</div>
+    </div>
+    <h1 class="report-title" id="reportTitle">홍길동 인지기능 분석 리포트</h1>
+    <div class="report-meta" id="reportMeta"></div>
+  </div>
+
+  <div class="report-body">
+
+    <!-- 긴급 알림 -->
+    <div class="urgent-box" id="urgentBox">
+      <div class="urgent-title">⚠️ 전문의 상담 강력 권고</div>
+      <div class="urgent-desc" id="urgentDesc"></div>
+    </div>
+
+    <!-- ★ 종합 점수 카드 -->
+    <div class="total-score-card" id="totalScoreCard">
+      <div class="total-score-inner">
+        <div class="total-score-label">BS·C SENIOR · 종합 인지 점수</div>
+        <div class="total-score-main">
+          <!-- 원형 게이지 -->
+          <div class="gauge-wrap">
+            <svg class="gauge-svg" width="110" height="110" viewBox="0 0 110 110">
+              <circle class="gauge-bg" cx="55" cy="55" r="46"/>
+              <circle class="gauge-fill" id="gaugeFill" cx="55" cy="55" r="46"
+                      stroke="#0891b2"
+                      stroke-dasharray="289"
+                      stroke-dashoffset="289"/>
+            </svg>
+            <div class="gauge-text">
+              <div class="gauge-score" id="gaugeScore">--</div>
+              <div class="gauge-max">/ 100</div>
+            </div>
+          </div>
+          <!-- 등급 정보 -->
+          <div class="total-score-info">
+            <div class="grade-badge grade-3" id="gradeBadge">분석 중...</div>
+            <div class="total-score-desc" id="gradeDesc">검사 결과를 분석하고 있습니다</div>
+          </div>
+        </div>
+
+        <!-- 점수 분해 -->
+        <div class="score-breakdown">
+          <div class="breakdown-item">
+            <div class="breakdown-label">인지검사 (70%)</div>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar-bg">
+                <div class="breakdown-bar-fill" id="cogBar" style="width:0%;background:#0891b2;"></div>
+              </div>
+              <div class="breakdown-score" id="cogScore" style="color:#67e8f9;">--</div>
+            </div>
+            <div class="breakdown-weight">MMSE 기반 · 최대 70점</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-label">기초율동 뇌파 (30%)</div>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar-bg">
+                <div class="breakdown-bar-fill" id="eegBar" style="width:0%;background:#a78bfa;"></div>
+              </div>
+              <div class="breakdown-score" id="eegScore" style="color:#c4b5fd;">--</div>
+            </div>
+            <div class="breakdown-weight">Peak α · 알파세기 · Coherence</div>
+          </div>
+        </div>
+
+        <!-- 뇌파 미입력 안내 -->
+        <div class="eeg-pending" id="eegPending">
+          🌊 아래에서 뉴로스펙 뇌파 수치를 입력하면 종합 점수가 완성됩니다
+        </div>
+
+        <!-- 5단계 등급 바 -->
+        <div class="grade-bar-section">
+          <div class="grade-bar-item" style="background:#4ade80" id="gbar1"></div>
+          <div class="grade-bar-item" style="background:#60a5fa" id="gbar2"></div>
+          <div class="grade-bar-item" style="background:#fbbf24" id="gbar3"></div>
+          <div class="grade-bar-item" style="background:#fb923c" id="gbar4"></div>
+          <div class="grade-bar-item" style="background:#f87171" id="gbar5"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:0.6rem;opacity:0.35;margin-top:6px;">
+          <span>정상</span><span>양호</span><span>주의</span><span>경각</span><span>위험</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 영역별 점수 (인지) -->
+    <div style="font-size:0.75rem;color:var(--dim);letter-spacing:2px;font-family:'Space Mono',monospace;margin-bottom:12px;">인지검사 영역별 점수</div>
+    <div class="domain-section" id="domainSection"></div>
+
+    <!-- 보호자 관찰 결과 -->
+    <div class="caregiver-result" id="caregiverResult" style="display:none">
+      <div class="caregiver-result-title">👨‍👩‍👧 보호자 관찰 항목</div>
+      <div id="caregiverResultBody"></div>
+    </div>
+
+    <!-- 뇌파 입력 -->
+    <div class="eeg-section">
+      <div class="eeg-title">🌊 뉴로스펙 기초율동 (Alpha Peak)</div>
+      <div class="eeg-sub">뉴로스펙 검사 결과를 입력하면 치매 위험도 통합 분석이 생성됩니다</div>
+      <div class="eeg-grid-3">
+        <div class="eeg-card">
+          <div class="eeg-card-icon">📊</div>
+          <div class="eeg-card-name">기초율동 Peak α</div>
+          <div class="eeg-card-unit">Hz</div>
+          <input class="eeg-input-num" type="number" id="eegHz" placeholder="예: 9" min="0" max="20" step="0.1">
+          <div class="eeg-card-ref">정상: 8~11Hz<br>치매위험: 7Hz↓</div>
+        </div>
+        <div class="eeg-card">
+          <div class="eeg-card-icon">⚡</div>
+          <div class="eeg-card-name">알파 세기</div>
+          <div class="eeg-card-unit">μV</div>
+          <input class="eeg-input-num" type="number" id="eegUv" placeholder="예: 4" min="0" max="50" step="0.1">
+          <div class="eeg-card-ref">정상: 3~8μV<br>감소시 주의</div>
+        </div>
+        <div class="eeg-card">
+          <div class="eeg-card-icon">🔗</div>
+          <div class="eeg-card-name">Coherence</div>
+          <div class="eeg-card-unit">0 ~ 1.0</div>
+          <input class="eeg-input-num" type="number" id="eegCoh" placeholder="예: 0.75" min="0" max="1" step="0.01">
+          <div class="eeg-card-ref">정상: 0.8↑<br>치매위험: 0.6↓</div>
+        </div>
+      </div>
+      <button class="eeg-btn" onclick="analyzeEEG()">🧠 뇌파 + 인지 통합 분석 생성</button>
+    </div>
+
+    <!-- 통합 분석 -->
+    <div class="integrated" id="integratedSection">
+      <div class="integrated-title">🔬 EEG + 인지 통합 분석</div>
+      <div id="insightList"></div>
+    </div>
+
+    <!-- 권고 사항 -->
+    <div class="recommend-section" id="recommendSection">
+      <div class="recommend-title">📋 권고 사항</div>
+      <div id="recommendList"></div>
+    </div>
+
+    <!-- ★ 뇌훈련 게임 -->
+    <div class="brain-game-section">
+      <div class="brain-game-header">
+        <div class="brain-game-title">🎮 뇌훈련 게임</div>
+        <div class="brain-game-sub">매일 5~10분 · 치매 예방 · 인지 기능 유지</div>
+      </div>
+
+      <!-- 게임 탭 -->
+      <div class="game-tabs">
+        <button class="game-tab active" onclick="switchGame('memory', this)">🔢 숫자기억</button>
+        <button class="game-tab" onclick="switchGame('stroop', this)">🎨 스트룹</button>
+        <button class="game-tab" onclick="switchGame('simon', this)">🔔 순서기억</button>
+        <button class="game-tab" onclick="switchGame('spot', this)">🔍 틀린그림</button>
+        <button class="game-tab" onclick="switchGame('calc', this)">⚡ 계산속도</button>
+      </div>
+
+      <!-- 게임 영역 -->
+      <div class="game-area" id="gameArea"></div>
+    </div>
+
+    <!-- 버튼 -->
+    <div class="report-actions">
+      <button class="btn-print" onclick="window.print()">🖨️ 리포트 인쇄 / PDF</button>
+      <button class="btn-restart" onclick="restartTest()">↺ 새 검사</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== 검사 문항 =====
+const SECTIONS = [
+  {
+    id:'orientation', name:'지남력', icon:'📅',
+    desc:'시간·장소·사람을 인식하는 능력',
+    color:'#0891b2', bgColor:'#e0f7fa',
+    maxScore: 10,
+    questions:[
+      { type:'choice', instr:'지남력 검사입니다 (시간)', text:'오늘은 몇 년도인가요?', options:[`${new Date().getFullYear()-1}년`,`${new Date().getFullYear()}년`,`${new Date().getFullYear()+1}년`,'모르겠어요'], answer:1 },
+      { type:'choice', instr:'지남력 검사입니다 (시간)', text:'지금은 어느 계절인가요?', options:['봄','여름','가을','겨울'], answer: [2,2,2,3,3,3,0,0,0,1,1,1][new Date().getMonth()] },
+      { type:'choice', instr:'지남력 검사입니다 (시간)', text:'오늘은 무슨 요일인가요?', options:['월요일','화요일','수요일','목요일','금요일','토요일','일요일'], answer: new Date().getDay()===0?6:new Date().getDay()-1 },
+      { type:'input',  instr:'지남력 검사입니다 (장소)', text:'지금 계신 곳은 어느 시/도인가요? (예: 서울, 경기, 부산)', placeholder:'시/도 입력', freeAnswer:true },
+      { type:'choice', instr:'지남력 검사입니다 (장소)', text:'지금 계신 곳은 어디에 해당하나요?', options:['집','병원/의원','요양원','복지관','기타'], answer:-1, freeAnswer:true },
+    ]
+  },
+  {
+    id:'registration', name:'기억 등록', icon:'📝',
+    desc:'새로운 정보를 기억에 저장하는 능력',
+    color:'#7c3aed', bgColor:'#f5f3ff',
+    maxScore: 3,
+    questions:[
+      { type:'memory3', instr:'기억 등록 검사입니다', text:'다음 세 단어를 기억해 주세요\n\n🌸 꽃   🚂 기차   ⚾ 야구공', memWords:['꽃','기차','야구공'] },
+    ]
+  },
+  {
+    id:'attention', name:'주의력·계산', icon:'🔢',
+    desc:'집중력을 유지하고 계산하는 능력',
+    color:'#d97706', bgColor:'#fef3c7',
+    maxScore: 5,
+    questions:[
+      { type:'choice', instr:'주의력·계산 검사입니다', text:'100에서 7을 빼면?', options:['90','93','95','97'], answer:1 },
+      { type:'choice', instr:'계속 7씩 빼보세요', text:'93에서 7을 빼면?', options:['84','86','88','90'], answer:1 },
+      { type:'choice', instr:'계속 7씩 빼보세요', text:'86에서 7을 빼면?', options:['77','79','81','83'], answer:1 },
+      { type:'choice', instr:'계속 7씩 빼보세요', text:'79에서 7을 빼면?', options:['68','70','72','74'], answer:1 },
+      { type:'choice', instr:'계속 7씩 빼보세요', text:'72에서 7을 빼면?', options:['63','65','67','69'], answer:1 },
+    ]
+  },
+  {
+    id:'recall', name:'기억 회상', icon:'🔍',
+    desc:'저장된 기억을 다시 떠올리는 능력',
+    color:'#be123c', bgColor:'#fff1f2',
+    maxScore: 3,
+    questions:[
+      { type:'recall3', instr:'기억 회상 검사입니다', text:'아까 기억하신 세 단어를 말씀해 주세요', recallWords:['꽃','기차','야구공'] },
+    ]
+  },
+  {
+    id:'language', name:'언어·따라 말하기', icon:'💬',
+    desc:'언어를 이해하고 표현하는 능력',
+    color:'#15803d', bgColor:'#dcfce7',
+    maxScore: 5,
+    questions:[
+      { type:'choice', instr:'이름 대기 검사입니다', text:'✏️ 이것은 무엇인가요?', options:['볼펜','연필','지우개','색연필'], answer:1 },
+      { type:'choice', instr:'이름 대기 검사입니다', text:'⌚ 이것은 무엇인가요?', options:['반지','팔찌','시계','목걸이'], answer:2 },
+      { type:'choice', instr:'따라 말하기 검사입니다', text:'"간장 공장 공장장은 강 공장장이고 된장 공장 공장장은 장 공장장이다" — 이 문장을 보고 얼마나 잘 읽으실 수 있나요?', options:['완전히 읽을 수 있어요','거의 읽을 수 있어요','절반 정도 읽을 수 있어요','읽기 어려워요'], answer:-1, freeAnswer:true },
+      { type:'choice', instr:'3단계 명령 검사입니다', text:'"종이를 집어서, 반으로 접고, 제게 돌려주세요" — 이 3단계 지시를 따를 수 있나요?', options:['3가지 모두 할 수 있어요','2가지 할 수 있어요','1가지만 할 수 있어요','어려워요'], answer:0 },
+      { type:'choice', instr:'쓰기 검사입니다', text:'"눈을 감으세요" 라는 문장을 보고 실제로 눈을 감을 수 있나요?', options:['네, 할 수 있어요','어려워요'], answer:0 },
+    ]
+  },
+  {
+    id:'visuospatial', name:'시공간 능력', icon:'🔷',
+    desc:'도형을 보고 그리거나 구성하는 능력',
+    color:'#0e7490', bgColor:'#e0f2fe',
+    maxScore: 2,
+    questions:[
+      { type:'choice', instr:'시공간 검사입니다', text:'🔷🔷\n🔷🔷\n위 그림처럼 겹치는 오각형 2개를 그릴 수 있나요?', options:['명확하게 그릴 수 있어요','대략 그릴 수 있어요','어렵지만 시도할 수 있어요','그리기 어려워요'], answer:0 },
+      { type:'choice', instr:'시계 그리기 검사입니다', text:'둥근 시계를 그리고 11시 10분을 표시할 수 있나요?', options:['정확하게 그릴 수 있어요','대략 그릴 수 있어요','시계 모양은 그리지만 시간이 틀려요','그리기 어려워요'], answer:0 },
+    ]
+  },
+];
+
+// 보호자 관찰 항목
+const CAREGIVER_QS = [
+  { text:'최근 6개월 내 같은 말을 반복하거나 같은 질문을 자주 하나요?', weight:2 },
+  { text:'날짜, 요일, 약속을 자주 잊어버리나요?', weight:2 },
+  { text:'가스불 끄기, 문 잠그기 등을 잊는 경우가 있나요?', weight:2 },
+  { text:'평소 잘 다니던 길에서 헤맨 적이 있나요?', weight:3 },
+  { text:'성격이나 행동이 예전과 달라졌나요?', weight:2 },
+  { text:'물건 이름이나 사람 이름을 자주 잊어버리나요?', weight:2 },
+  { text:'혼자 일상생활(요리, 청소, 대중교통)을 하기 어려워하나요?', weight:3 },
+];
+
+// ===== 상태 =====
+let userType = 'self';
+let examMode = 'eeg'; // 'eeg' = 뇌파+인지 통합 | 'cog' = 순수 인지
+
+function selectMode(mode) {
+  examMode = mode;
+  document.querySelectorAll('[id^="card-mode-"]').forEach(c => {
+    c.classList.remove('selected');
+    c.style.borderColor = 'rgba(255,255,255,0.1)';
+    c.style.background  = 'rgba(255,255,255,0.06)';
+  });
+  const el = document.getElementById('card-mode-' + mode);
+  el.classList.add('selected');
+  if (mode === 'eeg') {
+    el.style.borderColor = 'rgba(8,145,178,0.8)';
+    el.style.background  = 'rgba(8,145,178,0.2)';
+  } else {
+    el.style.borderColor = 'rgba(255,255,255,0.4)';
+    el.style.background  = 'rgba(255,255,255,0.1)';
+  }
+}
+let patientInfo = {};
+let curSection = 0;
+let curQ = 0;
+let scores = {};
+let sectionScores = {};
+let answered = false;
+let totalQ = 0;
+let answeredCount = 0;
+let caregiverAnswers = [];
+let caregiverRisk = 0;
+let recalledWords = [];
+
+// 총 문항 계산
+SECTIONS.forEach(s => { scores[s.id] = 0; sectionScores[s.id] = 0; });
+totalQ = SECTIONS.reduce((t, s) => t + s.questions.length, 0);
+
+// ===== 시작 =====
+function selectUser(type) {
+  userType = type;
+  document.querySelectorAll('.user-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('card-' + (type==='self'?'self':'both')).classList.add('selected');
+}
+
+function startTest() {
+  const name = document.getElementById('patientName').value.trim();
+  const age  = document.getElementById('patientAge').value;
+  const gender = document.getElementById('patientGender').value;
+  if (!name || !age) { alert('이름과 나이를 입력해주세요!'); return; }
+  if (parseInt(age) < 45) { alert('이 검사는 45세 이상을 대상으로 합니다.'); return; }
+
+  patientInfo = {
+    name, age, gender,
+    caregiver: document.getElementById('caregiverName').value.trim(),
+    examiner: document.getElementById('examinerName').value.trim(),
+    date: new Date().toLocaleDateString('ko-KR')
+  };
+
+  showPage('page-test');
+  loadQ();
+}
+
+// ===== 문항 로드 =====
+function loadQ() {
+  // 보호자 섹션
+  if (userType === 'both' && curSection >= SECTIONS.length) {
+    loadCaregiverQ();
+    return;
+  }
+  if (curSection >= SECTIONS.length) { showReport(); return; }
+
+  const sec = SECTIONS[curSection];
+  const q   = sec.questions[curQ];
+  answered  = false;
+
+  // 헤더 업데이트
+  document.getElementById('sectionName').textContent = sec.name;
+  const gIdx = SECTIONS.slice(0, curSection).reduce((t,s)=>t+s.questions.length,0) + curQ + 1;
+  const gTotal = userType==='both' ? totalQ + CAREGIVER_QS.length : totalQ;
+  document.getElementById('progText').textContent = `${gIdx} / ${gTotal}`;
+  document.getElementById('progFill').style.width = `${(gIdx/gTotal)*100}%`;
+
+  // 배너
+  document.getElementById('sectionBannerWrap').innerHTML = `
+    <div class="section-banner" style="background:linear-gradient(135deg,var(--navy),${sec.color}33);">
+      <div class="section-banner-icon">${sec.icon}</div>
+      <div>
+        <div class="section-banner-name">${sec.name}</div>
+        <div class="section-banner-desc">${sec.desc}</div>
+      </div>
+    </div>`;
+
+  document.getElementById('qNum').textContent = `${sec.name} · 문항 ${curQ+1}`;
+  document.getElementById('qInstr').textContent = q.instr;
+  document.getElementById('qText').style.whiteSpace = 'pre-line';
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('btnNext').disabled = true;
+
+  const optsEl = document.getElementById('qOpts');
+  optsEl.innerHTML = '';
+
+  if (q.type === 'choice') {
+    renderChoice(q, optsEl, sec);
+  } else if (q.type === 'input') {
+    renderInput(q, optsEl, sec);
+  } else if (q.type === 'memory3') {
+    renderMemory3(optsEl);
+  } else if (q.type === 'recall3') {
+    renderRecall3(q, optsEl, sec);
+  }
+
+  // 카드 애니메이션
+  const card = document.getElementById('qCard');
+  card.style.animation='none'; card.offsetHeight; card.style.animation='';
+}
+
+function renderChoice(q, el, sec) {
+  const letters = ['①','②','③','④','⑤','⑥','⑦'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span>${opt}`;
+    if (q.freeAnswer) {
+      btn.onclick = () => {
+        document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        // 자유 응답은 점수 없음, 다음 버튼만 활성화
+        document.getElementById('btnNext').disabled = false;
+        answered = true;
+      };
+    } else {
+      btn.onclick = () => selectOpt(i, q.answer, btn, sec);
+    }
+    el.appendChild(btn);
+  });
+}
+
+function renderInput(q, el, sec) {
+  const inp = document.createElement('input');
+  inp.type = 'text';
+  inp.className = 's-answer';
+  inp.placeholder = q.placeholder || '답을 입력하세요';
+  inp.oninput = () => {
+    if (inp.value.trim()) {
+      document.getElementById('btnNext').disabled = false;
+      if (!answered) {
+        answered = true;
+        scores[sec.id] += 1;
+        sectionScores[sec.id] = (sectionScores[sec.id]||0) + 1;
+      }
+    }
+  };
+  el.appendChild(inp);
+}
+
+function renderMemory3(el) {
+  el.innerHTML = `
+    <div style="background:var(--navy);color:white;border-radius:14px;padding:24px;text-align:center;">
+      <div style="font-size:0.75rem;letter-spacing:2px;opacity:0.4;margin-bottom:16px;font-family:'Space Mono',monospace;">기억할 단어</div>
+      <div style="display:flex;justify-content:center;gap:24px;font-size:1.4rem;font-weight:900;margin-bottom:16px;">
+        <span>🌸 꽃</span><span>🚂 기차</span><span>⚾ 야구공</span>
+      </div>
+      <div style="font-size:0.78rem;opacity:0.4;">이 세 단어를 잘 기억해 두세요. 나중에 물어볼게요.</div>
+    </div>
+    <div style="margin-top:14px;font-size:0.82rem;color:var(--dim);text-align:center;">기억하셨으면 "다음" 버튼을 눌러주세요</div>
+  `;
+  document.getElementById('btnNext').disabled = false;
+  answered = true;
+}
+
+function renderRecall3(q, el, sec) {
+  const words = q.recallWords;
+  el.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      ${words.map((w,i) => `
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:0.8rem;color:var(--dim);width:28px;">${i+1}.</span>
+          <input type="text" class="s-answer" id="recall${i}" placeholder="단어 ${i+1}" style="flex:1;"
+            oninput="checkRecall()">
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function checkRecall() {
+  const words = ['꽃','기차','야구공'];
+  recalledWords = words.map((_,i) => document.getElementById('recall'+i)?.value.trim() || '');
+  const anyFilled = recalledWords.some(w => w.length > 0);
+  if (anyFilled) document.getElementById('btnNext').disabled = false;
+}
+
+function selectOpt(idx, answer, btn, sec) {
+  if (answered) return;
+  answered = true;
+
+  const correct = idx === answer;
+  if (correct) {
+    scores[sec.id] = (scores[sec.id]||0) + 1;
+    sectionScores[sec.id] = (sectionScores[sec.id]||0) + 1;
+  }
+
+  document.querySelectorAll('.opt-btn').forEach((b, i) => {
+    b.onclick = null;
+    if (i === answer && answer >= 0) b.classList.add('correct');
+    else if (b === btn && !correct) b.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('feedback');
+  if (answer >= 0) {
+    fb.textContent = correct ? '✓ 정답입니다' : `정답: ${document.querySelectorAll('.opt-btn')[answer]?.textContent.replace(/[①②③④⑤⑥⑦]/,'').trim()}`;
+    fb.className = 'feedback ' + (correct ? 'ok' : 'ng');
+    fb.style.display = 'block';
+  }
+
+  document.getElementById('btnNext').disabled = false;
+  answeredCount++;
+}
+
+// ===== 보호자 검사 =====
+let cgQ = 0;
+
+function loadCaregiverQ() {
+  if (cgQ >= CAREGIVER_QS.length) { calcCaregiverRisk(); showReport(); return; }
+
+  const q = CAREGIVER_QS[cgQ];
+  answered = false;
+
+  // 배너
+  document.getElementById('sectionBannerWrap').innerHTML = `
+    <div class="caregiver-banner">
+      <div class="section-banner-icon">👨‍👩‍👧</div>
+      <div>
+        <div class="section-banner-name">보호자 관찰 항목</div>
+        <div class="section-banner-desc">보호자분께서 응답해 주세요</div>
+      </div>
+    </div>`;
+
+  const total = totalQ + CAREGIVER_QS.length;
+  const cur = totalQ + cgQ + 1;
+  document.getElementById('sectionName').textContent = '보호자 관찰';
+  document.getElementById('progText').textContent = `${cur} / ${total}`;
+  document.getElementById('progFill').style.width = `${(cur/total)*100}%`;
+
+  document.getElementById('qNum').textContent = `보호자 관찰 · ${cgQ+1}`;
+  document.getElementById('qInstr').textContent = '지난 6개월간 관찰한 내용을 바탕으로 응답해 주세요';
+  document.getElementById('qText').textContent = q.text;
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('btnNext').disabled = true;
+
+  const optsEl = document.getElementById('qOpts');
+  optsEl.innerHTML = '';
+
+  const opts = ['자주 그렇다','가끔 그렇다','거의 없다','전혀 없다'];
+  const weights = [q.weight, Math.round(q.weight*0.5), 0, 0];
+
+  opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="opt-letter">${['①','②','③','④'][i]}</span>${opt}`;
+    btn.onclick = () => {
+      document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      caregiverAnswers[cgQ] = { text: q.text, answer: opt, weight: weights[i] };
+      document.getElementById('btnNext').disabled = false;
+      answered = true;
+    };
+    optsEl.appendChild(btn);
+  });
+
+  const card = document.getElementById('qCard');
+  card.style.animation='none'; card.offsetHeight; card.style.animation='';
+}
+
+function calcCaregiverRisk() {
+  caregiverRisk = caregiverAnswers.reduce((t, a) => t + (a?.weight||0), 0);
+}
+
+// ===== 다음 문항 =====
+function nextQ() {
+  // 기억 회상 점수 처리
+  const sec = SECTIONS[curSection];
+  if (sec && sec.questions[curQ]?.type === 'recall3') {
+    const words = ['꽃','기차','야구공'];
+    let recalled = 0;
+    words.forEach((w,i) => {
+      if (recalledWords[i] && recalledWords[i].includes(w)) recalled++;
+    });
+    scores[sec.id] = (scores[sec.id]||0) + recalled;
+    sectionScores[sec.id] = (sectionScores[sec.id]||0) + recalled;
+  }
+
+  curQ++;
+  if (curSection < SECTIONS.length && curQ >= SECTIONS[curSection].questions.length) {
+    curSection++; curQ = 0;
+  }
+
+  if (userType === 'both' && curSection >= SECTIONS.length) {
+    loadCaregiverQ();
+  } else if (curSection >= SECTIONS.length) {
+    showReport();
+  } else {
+    loadQ();
+  }
+}
+
+function skipQ() {
+  if (userType === 'both' && curSection >= SECTIONS.length) {
+    cgQ++; loadCaregiverQ();
+  } else {
+    nextQ();
+  }
+}
+
+// 보호자 다음
+const origNextQ = nextQ;
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('btnNext').addEventListener('click', () => {
+    if (userType === 'both' && curSection >= SECTIONS.length) {
+      cgQ++; loadCaregiverQ();
+    }
+  });
+});
+
+// ===== 5단계 등급 정의 =====
+const GRADES = [
+  { min:85, label:'정상',  cls:'grade-1', emoji:'🟢', color:'#4ade80',
+    desc:'인지기능과 뇌파 상태가 연령 대비 정상 범위입니다. 정기적인 관리를 권장합니다.' },
+  { min:70, label:'양호',  cls:'grade-2', emoji:'🔵', color:'#60a5fa',
+    desc:'대부분의 영역이 양호하나 일부 주의가 필요합니다. 6개월 후 재검사를 권장합니다.' },
+  { min:55, label:'주의',  cls:'grade-3', emoji:'🟡', color:'#fbbf24',
+    desc:'일부 인지 영역에서 저하가 관찰됩니다. 전문의 상담과 집중적인 뇌 건강 관리가 필요합니다.' },
+  { min:40, label:'경각',  cls:'grade-4', emoji:'🟠', color:'#fb923c',
+    desc:'여러 인지 영역에서 유의미한 저하가 있습니다. 3개월 내 신경과 전문의 방문을 강력 권고합니다.' },
+  { min:0,  label:'위험',  cls:'grade-5', emoji:'🔴', color:'#f87171',
+    desc:'인지기능 저하가 심각합니다. 즉시 신경과·정신건강의학과 전문의 상담이 필요합니다.' },
+];
+
+let cogScore100 = 0;
+let eegScore100 = 0;
+let eegEntered  = false;
+
+function getGrade(total) {
+  return GRADES.find(g => total >= g.min) || GRADES[4];
+}
+
+function updateTotalScoreCard() {
+  const total = Math.round(cogScore100 + eegScore100);
+  const grade = getGrade(total);
+
+  // 원형 게이지
+  const circumference = 2 * Math.PI * 46;
+  const fill = document.getElementById('gaugeFill');
+  if (fill) {
+    fill.style.stroke = grade.color;
+    setTimeout(() => {
+      fill.style.strokeDashoffset = circumference - (total / 100) * circumference;
+    }, 100);
+  }
+
+  document.getElementById('gaugeScore').textContent = total;
+
+  const badge = document.getElementById('gradeBadge');
+  badge.className = 'grade-badge ' + grade.cls;
+  badge.textContent = grade.emoji + ' ' + grade.label;
+  document.getElementById('gradeDesc').textContent = grade.desc;
+
+  setTimeout(() => {
+    const maxCog = examMode === 'eeg' ? 70 : 100;
+    document.getElementById('cogBar').style.width = Math.round((cogScore100/maxCog)*100) + '%';
+    document.getElementById('cogScore').textContent = Math.round(cogScore100) + 'pt';
+    if (examMode === 'eeg') {
+      document.getElementById('eegBar').style.width = eegEntered ? Math.round((eegScore100/30)*100) + '%' : '0%';
+      document.getElementById('eegScore').textContent = eegEntered ? Math.round(eegScore100) + 'pt' : '--';
+    }
+  }, 150);
+
+  document.getElementById('eegPending').style.display = eegEntered ? 'none' : 'block';
+
+  const gradeIdx = GRADES.indexOf(grade) + 1;
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('gbar' + i);
+    if (el) el.classList.toggle('active', i === gradeIdx);
+  }
+
+  if (total < 40 || (userType==='both' && caregiverRisk >= 8)) {
+    document.getElementById('urgentBox').style.display = 'block';
+    document.getElementById('urgentDesc').textContent =
+      '종합 점수가 위험 단계이거나 보호자 관찰에서 위험 신호가 감지되었습니다. 치매상담콜센터(1899-9988) 또는 신경과 전문의에게 연락하시기 바랍니다.';
+  }
+}
+
+// ===== 리포트 =====
+function showReport() {
+  showPage('page-report');
+
+  const rawScore = Object.values(scores).reduce((a,b)=>a+b,0);
+  const maxScore = 28;
+  eegEntered = false;
+
+  // ===== 모드별 점수 계산 =====
+  if (examMode === 'eeg') {
+    // 뇌파 통합 모드: 인지 70점 만점
+    cogScore100 = Math.round((rawScore / maxScore) * 70);
+    eegScore100 = 0;
+  } else {
+    // 순수 인지 모드: 인지 100점 만점
+    cogScore100 = Math.round((rawScore / maxScore) * 100);
+    eegScore100 = 0;
+  }
+
+  // 리포트 헤더
+  const modeLabel = examMode === 'eeg' ? '뇌파+인지 통합' : '순수 인지검사';
+  document.getElementById('reportTitle').textContent = `${patientInfo.name} 종합 인지 리포트`;
+  document.getElementById('reportMeta').textContent =
+    `검사일: ${patientInfo.date} · ${patientInfo.age}세 ${patientInfo.gender} · 모드: ${modeLabel} · 검사자: ${patientInfo.examiner||'-'}`;
+
+  // 분해 바 라벨 업데이트
+  const cogLabel = document.querySelector('.breakdown-label');
+  if (cogLabel) cogLabel.textContent = examMode==='eeg' ? '인지검사 (70%)' : '인지검사 (100%)';
+  const cogWeight = document.querySelector('.breakdown-weight');
+  if (cogWeight) cogWeight.textContent = examMode==='eeg' ? 'MMSE 기반 · 최대 70점' : 'MMSE 기반 · 100점 만점';
+
+  // 뇌파 섹션 표시/숨김
+  const eegSection = document.querySelector('.eeg-section');
+  const eegBreakdown = document.getElementById('eegBar')?.closest('.breakdown-item');
+  if (examMode === 'cog') {
+    if (eegSection)    eegSection.style.display = 'none';
+    if (eegBreakdown)  eegBreakdown.style.display = 'none';
+    document.getElementById('eegPending').style.display = 'none';
+  } else {
+    if (eegSection)    eegSection.style.display = 'block';
+    if (eegBreakdown)  eegBreakdown.style.display = 'block';
+  }
+
+  setTimeout(() => updateTotalScoreCard(), 200);
+
+  // 영역별 점수
+  const domainEl = document.getElementById('domainSection');
+  domainEl.innerHTML = '';
+  SECTIONS.forEach(sec => {
+    const raw = sectionScores[sec.id]||0;
+    const max = sec.maxScore;
+    const pct = Math.round((raw/max)*100);
+    let level, lc, lb;
+    if(pct>=80){level='양호';lc='#166534';lb='#dcfce7';}
+    else if(pct>=50){level='주의';lc='#92400e';lb='#fef3c7';}
+    else{level='저하';lc='#9f1239';lb='#fff1f2';}
+    const card = document.createElement('div');
+    card.className = 'domain-card';
+    card.innerHTML = `
+      <div class="domain-top">
+        <div class="domain-icon" style="background:${sec.bgColor}">${sec.icon}</div>
+        <div style="flex:1"><div class="domain-name">${sec.name}</div><div class="domain-sub">${sec.desc}</div></div>
+        <span class="domain-level-badge" style="color:${lc};background:${lb}">${level}</span>
+      </div>
+      <div class="domain-bar-wrap">
+        <div class="domain-bar-bg"><div class="domain-bar-fill" style="width:0%;background:${sec.color}" data-w="${pct}%"></div></div>
+        <div class="domain-score-num" style="color:${sec.color}">${raw}/${max}</div>
+      </div>`;
+    domainEl.appendChild(card);
+  });
+  setTimeout(()=>{ document.querySelectorAll('.domain-bar-fill').forEach(b=>{b.style.width=b.dataset.w;}); }, 400);
+
+  // 보호자 결과
+  if (userType==='both' && caregiverAnswers.length>0) {
+    document.getElementById('caregiverResult').style.display='block';
+    const body = document.getElementById('caregiverResultBody');
+    body.innerHTML = caregiverAnswers.map(a=>{
+      if(!a) return '';
+      const color=a.weight>=2?'#be123c':a.weight>=1?'#d97706':'#15803d';
+      return `<div class="caregiver-item"><div class="caregiver-dot" style="background:${color}"></div><div><strong style="color:${color}">${a.answer}</strong> — ${a.text}</div></div>`;
+    }).join('');
+    const cgRiskText = caregiverRisk>=8?'⚠️ 고위험':caregiverRisk>=4?'💡 주의 필요':'✅ 정상 범위';
+    body.innerHTML += `<div style="margin-top:12px;padding:10px 14px;background:rgba(124,58,237,0.08);border-radius:10px;font-size:0.82rem;font-weight:700;color:#7c3aed;">보호자 관찰 위험도: ${cgRiskText} (점수: ${caregiverRisk})</div>`;
+  }
+
+  buildRecommend(rawScore);
+}
+
+  document.getElementById('reportTitle').textContent = `${patientInfo.name} 종합 인지 리포트`;
+  document.getElementById('reportMeta').textContent =
+    `검사일: ${patientInfo.date} · ${patientInfo.age}세 ${patientInfo.gender} · 검사자: ${patientInfo.examiner||'-'}`;
+
+  setTimeout(() => updateTotalScoreCard(), 200);
+
+  // 영역별 점수
+  const domainEl = document.getElementById('domainSection');
+  domainEl.innerHTML = '';
+  SECTIONS.forEach(sec => {
+    const raw = sectionScores[sec.id]||0;
+    const max = sec.maxScore;
+    const pct = Math.round((raw/max)*100);
+    let level, lc, lb;
+    if(pct>=80){level='양호';lc='#166534';lb='#dcfce7';}
+    else if(pct>=50){level='주의';lc='#92400e';lb='#fef3c7';}
+    else{level='저하';lc='#9f1239';lb='#fff1f2';}
+    const card = document.createElement('div');
+    card.className = 'domain-card';
+    card.innerHTML = `
+      <div class="domain-top">
+        <div class="domain-icon" style="background:${sec.bgColor}">${sec.icon}</div>
+        <div style="flex:1"><div class="domain-name">${sec.name}</div><div class="domain-sub">${sec.desc}</div></div>
+        <span class="domain-level-badge" style="color:${lc};background:${lb}">${level}</span>
+      </div>
+      <div class="domain-bar-wrap">
+        <div class="domain-bar-bg"><div class="domain-bar-fill" style="width:0%;background:${sec.color}" data-w="${pct}%"></div></div>
+        <div class="domain-score-num" style="color:${sec.color}">${raw}/${max}</div>
+      </div>`;
+    domainEl.appendChild(card);
+  });
+  setTimeout(() => { document.querySelectorAll('.domain-bar-fill').forEach(b=>{b.style.width=b.dataset.w;}); }, 400);
+
+  // 보호자 결과
+  if (userType==='both' && caregiverAnswers.length>0) {
+    document.getElementById('caregiverResult').style.display='block';
+    const body = document.getElementById('caregiverResultBody');
+    body.innerHTML = caregiverAnswers.map(a=>{
+      if(!a) return '';
+      const color=a.weight>=2?'#be123c':a.weight>=1?'#d97706':'#15803d';
+      return `<div class="caregiver-item"><div class="caregiver-dot" style="background:${color}"></div><div><strong style="color:${color}">${a.answer}</strong> — ${a.text}</div></div>`;
+    }).join('');
+    const cgRiskText = caregiverRisk>=8?'⚠️ 고위험':caregiverRisk>=4?'💡 주의 필요':'✅ 정상 범위';
+    body.innerHTML += `<div style="margin-top:12px;padding:10px 14px;background:rgba(124,58,237,0.08);border-radius:10px;font-size:0.82rem;font-weight:700;color:#7c3aed;">보호자 관찰 위험도: ${cgRiskText} (점수: ${caregiverRisk})</div>`;
+  }
+
+  buildRecommend(rawScore);
+  setTimeout(() => initGames(), 600);
+}
+
+function analyzeEEG() {
+  const hz  = parseFloat(document.getElementById('eegHz').value);
+  const uv  = parseFloat(document.getElementById('eegUv').value);
+  const coh = parseFloat(document.getElementById('eegCoh').value);
+  if (isNaN(hz) && isNaN(uv) && isNaN(coh)) { alert('뇌파 수치를 하나 이상 입력해주세요!'); return; }
+
+  // 항목별 점수 (각 10점)
+  const hzS  = !isNaN(hz)  ? (hz>=9&&hz<=11?10:hz>=8?8:hz>11&&hz<=13?7:hz>=7?4:1) : 10;
+  const uvS  = !isNaN(uv)  ? (uv>=3&&uv<=8?10:uv>=2?7:uv>8&&uv<=12?7:uv>=1?4:1) : 10;
+  const cohS = !isNaN(coh) ? (coh>=0.9?10:coh>=0.8?8:coh>=0.7?6:coh>=0.6?4:1) : 10;
+
+  const entered = [!isNaN(hz),!isNaN(uv),!isNaN(coh)].filter(Boolean).length;
+  const rawEeg  = (!isNaN(hz)?hzS:0) + (!isNaN(uv)?uvS:0) + (!isNaN(coh)?cohS:0);
+  eegScore100   = Math.round((rawEeg / (entered*10)) * 30);
+  eegEntered    = true;
+
+  updateTotalScoreCard();
+
+  // 인사이트
+  const total = Math.round(cogScore100 + eegScore100);
+  const grade = getGrade(total);
+  const insights = [
+    { icon: grade.emoji, text: `<strong>종합 점수 ${total}점 — ${grade.label}</strong> · 인지검사 ${Math.round(cogScore100)}pt (70%) + 뇌파 ${Math.round(eegScore100)}pt (30%)` }
+  ];
+
+  if (!isNaN(hz)) {
+    if(hz<7) insights.push({icon:'🔴',text:`<strong>Peak α 심각 저하 (${hz}Hz)</strong> — 7Hz 미만은 치매 진행과 강한 연관성이 있습니다. 정밀 검사가 시급합니다.`});
+    else if(hz<9) insights.push({icon:'🟡',text:`<strong>Peak α 저하 (${hz}Hz)</strong> — 경도인지장애와 연관될 수 있습니다. 추적 관찰이 필요합니다.`});
+    else insights.push({icon:'🟢',text:`<strong>Peak α 정상 (${hz}Hz)</strong> — 뇌 기본 리듬이 안정적입니다.`});
+  }
+  if (!isNaN(uv)) {
+    if(uv<2) insights.push({icon:'🔴',text:`<strong>알파 세기 심각 감소 (${uv}μV)</strong> — 뇌 활성도 저하 및 인지기능 감퇴와 연관됩니다.`});
+    else if(uv<3) insights.push({icon:'🟡',text:`<strong>알파 세기 감소 (${uv}μV)</strong> — 정상 범위(3~8μV) 아래입니다. 모니터링이 필요합니다.`});
+    else insights.push({icon:'🟢',text:`<strong>알파 세기 정상 (${uv}μV)</strong> — 뇌 활성 상태가 양호합니다.`});
+  }
+  if (!isNaN(coh)) {
+    if(coh<0.6) insights.push({icon:'🔴',text:`<strong>Coherence 심각 저하 (${coh})</strong> — 좌우 뇌 동기화가 매우 낮습니다. 알츠하이머형 치매에서 자주 관찰됩니다.`});
+    else if(coh<0.8) insights.push({icon:'🟡',text:`<strong>Coherence 저하 (${coh})</strong> — 뇌 동기화가 다소 낮습니다. 경과 관찰이 필요합니다.`});
+    else insights.push({icon:'🟢',text:`<strong>Coherence 양호 (${coh})</strong> — 좌우 뇌 동기화가 잘 유지되고 있습니다.`});
+  }
+
+  const section = document.getElementById('integratedSection');
+  document.getElementById('insightList').innerHTML = insights.map(i=>
+    `<div class="insight-item"><span class="insight-icon">${i.icon}</span><div class="insight-text">${i.text}</div></div>`
+  ).join('');
+  section.style.display = 'block';
+  section.scrollIntoView({behavior:'smooth'});
+} // analyzeEEG 끝
+
+function buildRecommend(score) {
+  const items = [];
+
+  if (score >= 24) {
+    items.push({ icon:'🧠', name:'뇌 건강 유지 훈련', desc:'BS·C 인지 훈련 + 뉴로피드백으로 현재 인지 수준을 유지하세요.' });
+    items.push({ icon:'🎵', name:'음악 활동', desc:'피아노 연주, 노래 부르기 등 음악 활동이 인지 유지에 효과적입니다.' });
+    items.push({ icon:'🚶', name:'규칙적인 유산소 운동', desc:'걷기, 수영 등 유산소 운동은 뇌 혈류를 증가시켜 인지 보호에 도움이 됩니다.' });
+    items.push({ icon:'📅', name:'연 1회 정기 스크리닝', desc:'현재 검사를 연 1회 정기적으로 반복하여 변화를 모니터링하세요.' });
+  } else if (score >= 18) {
+    items.push({ icon:'🏥', name:'신경과 전문의 상담 권고', desc:'경도인지장애는 조기 개입 시 진행을 늦출 수 있습니다. 3개월 이내 전문의 상담을 권고합니다.' });
+    items.push({ icon:'🧠', name:'집중적 뉴로피드백 훈련', desc:'주 3회 이상 BS·C 뉴로피드백 훈련으로 인지 기능 유지를 시도하세요.' });
+    items.push({ icon:'💊', name:'치매안심센터 연계', desc:'치매안심센터(1899-9988)에서 무료 정밀 검사와 다양한 지원 프로그램을 받을 수 있습니다.' });
+    items.push({ icon:'📝', name:'일상 기록 습관', desc:'일기 쓰기, 할 일 목록 작성 등 기억을 보조하는 습관이 도움이 됩니다.' });
+  } else {
+    items.push({ icon:'🚨', name:'즉시 전문의 상담 강력 권고', desc:'신경과 또는 정신건강의학과를 가능한 빨리 방문하세요. 치매상담콜센터: 1899-9988' });
+    items.push({ icon:'🏥', name:'정밀 신경심리검사', desc:'전문 의료기관에서 MRI, 혈액검사 등 정밀 검사를 받으세요.' });
+    items.push({ icon:'👨‍👩‍👧', name:'보호자 지원 강화', desc:'일상생활 안전 관리와 보호자 지원 네트워크 구축이 필요합니다.' });
+    items.push({ icon:'📞', name:'치매안심센터 등록', desc:'치매안심센터에 등록하면 무료 돌봄 서비스와 의료 지원을 받을 수 있습니다.' });
+  }
+
+  document.getElementById('recommendList').innerHTML = items.map(i => `
+    <div class="recommend-item">
+      <span class="recommend-icon">${i.icon}</span>
+      <div>
+        <div class="recommend-name">${i.name}</div>
+        <div class="recommend-desc">${i.desc}</div>
+      </div>
+    </div>`).join('');
+}
+
+function analyzeEEG() {
+  const hz  = parseFloat(document.getElementById('eegHz').value);
+  const uv  = parseFloat(document.getElementById('eegUv').value);
+  const coh = parseFloat(document.getElementById('eegCoh').value);
+
+  if (isNaN(hz) && isNaN(uv) && isNaN(coh)) { alert('뇌파 수치를 입력해주세요!'); return; }
+
+  const totalScore = Object.values(scores).reduce((a,b)=>a+b,0);
+  const insights = [];
+
+  // Peak α 분석
+  if (!isNaN(hz)) {
+    if (hz < 7) {
+      insights.push({ icon:'🔴', text:`<strong>기초율동 Peak α 심각 저하 (${hz}Hz)</strong> — 알파 피크가 7Hz 미만으로 치매 진행과 강한 연관성이 있습니다. 전문의 상담이 시급합니다.` });
+    } else if (hz < 9) {
+      insights.push({ icon:'🟡', text:`<strong>기초율동 Peak α 저하 (${hz}Hz)</strong> — 알파 피크 감소는 경도인지장애와 연관될 수 있습니다. ${totalScore<24?'인지검사 결과와 함께 전문의 상담을 권고합니다.':'인지검사는 정상이나 추적 관찰이 필요합니다.'}` });
+    } else {
+      insights.push({ icon:'🟢', text:`<strong>기초율동 Peak α 정상 (${hz}Hz)</strong> — 뇌 기본 리듬이 안정적으로 유지되고 있습니다.` });
+    }
+  }
+
+  // 알파 세기 분석
+  if (!isNaN(uv)) {
+    if (uv < 2) {
+      insights.push({ icon:'🔴', text:`<strong>알파 세기 심각 감소 (${uv}μV)</strong> — 알파파 진폭이 매우 낮습니다. 뇌 활성도 저하 및 인지기능 감퇴와 연관됩니다.` });
+    } else if (uv < 3) {
+      insights.push({ icon:'🟡', text:`<strong>알파 세기 감소 (${uv}μV)</strong> — 알파파 진폭이 정상 범위(3~8μV) 아래입니다. 지속적인 모니터링이 필요합니다.` });
+    } else {
+      insights.push({ icon:'🟢', text:`<strong>알파 세기 정상 (${uv}μV)</strong> — 뇌 활성 상태가 양호합니다.` });
+    }
+  }
+
+  // Coherence 분석
+  if (!isNaN(coh)) {
+    if (coh < 0.6) {
+      insights.push({ icon:'🔴', text:`<strong>Coherence 심각 저하 (${coh})</strong> — 좌우 뇌 동기화가 매우 낮습니다. 알츠하이머형 치매에서 자주 관찰되는 패턴입니다. 정밀 검사가 필요합니다.` });
+    } else if (coh < 0.8) {
+      insights.push({ icon:'🟡', text:`<strong>Coherence 저하 (${coh})</strong> — 뇌 동기화가 다소 낮습니다. ${totalScore<24?'인지검사 결과와 함께 종합 판단이 필요합니다.':'인지검사 결과는 정상이나 경과 관찰을 권장합니다.'}` });
+    } else {
+      insights.push({ icon:'🟢', text:`<strong>Coherence 양호 (${coh})</strong> — 좌우 뇌 동기화가 잘 유지되고 있습니다.` });
+    }
+  }
+
+  if (insights.length === 0) {
+    insights.push({ icon:'🟢', text:'뇌파 패턴이 연령 대비 양호한 수준입니다. 현재의 뇌 건강 관리를 유지하세요.' });
+  }
+
+  const section = document.getElementById('integratedSection');
+  document.getElementById('insightList').innerHTML = insights.map(i =>
+    `<div class="insight-item"><span class="insight-icon">${i.icon}</span><div class="insight-text">${i.text}</div></div>`
+  ).join('');
+  section.style.display = 'block';
+  section.scrollIntoView({ behavior:'smooth' });
+}
+
+// ===== 뇌훈련 게임 =====
+let currentGame = 'memory';
+let gameState = {};
+
+function switchGame(name, btn) {
+  currentGame = name;
+  document.querySelectorAll('.game-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  gameState = {};
+  renderGame();
+}
+
+function renderGame() {
+  const area = document.getElementById('gameArea');
+  if (!area) return;
+  const G = {
+    memory: renderMemoryGame,
+    stroop: renderStroopGame,
+    simon:  renderSimonGame,
+    spot:   renderSpotGame,
+    calc:   renderCalcGame,
+  };
+  (G[currentGame] || renderMemoryGame)();
+}
+
+// ========== 1. 숫자 기억 게임 ==========
+function renderMemoryGame() {
+  const area = document.getElementById('gameArea');
+  const st = gameState;
+  if (!st.phase) { st.phase='start'; st.level=3; st.score=0; st.lives=3; }
+
+  if (st.phase === 'start') {
+    area.innerHTML = `
+      <div class="level-badge">🔢 숫자 기억</div>
+      <div class="game-score-bar" style="width:100%">
+        <span>레벨 <span class="game-score-val">${st.level}</span></span>
+        <span>점수 <span class="game-score-val">${st.score}</span></span>
+        <span>❤️ <span class="game-score-val">${st.lives}</span></span>
+      </div>
+      <div class="game-msg">숫자를 보여드립니다.<br>기억한 후 순서대로 입력하세요!</div>
+      <button class="game-btn" onclick="memoryShow()">시작 ▶</button>
+    `;
+  } else if (st.phase === 'show') {
+    const nums = Array.from({length: st.level}, () => Math.floor(Math.random()*9)+1);
+    st.answer = nums.join('');
+    let i = 0;
+    area.innerHTML = `
+      <div class="level-badge">레벨 ${st.level} · ${st.level}자리</div>
+      <div class="game-display" id="memDisplay">준비...</div>
+      <div class="game-msg" id="memMsg">집중하세요!</div>`;
+    const show = () => {
+      if (i < nums.length) {
+        document.getElementById('memDisplay').textContent = nums[i];
+        i++;
+        setTimeout(show, 900);
+      } else {
+        document.getElementById('memDisplay').textContent = '?';
+        document.getElementById('memMsg').textContent = '입력하세요!';
+        document.getElementById('gameArea').innerHTML += `
+          <input class="game-input" id="memInput" type="number" placeholder="숫자 입력" autofocus>
+          <div><button class="game-btn" onclick="memoryCheck()">확인</button></div>`;
+        st.phase = 'input';
+      }
+    };
+    setTimeout(show, 600);
+  } else if (st.phase === 'result') {
+    const ok = st.lastOk;
+    area.innerHTML = `
+      <div class="level-badge">레벨 ${st.level}</div>
+      <div class="game-score-bar" style="width:100%">
+        <span>점수 <span class="game-score-val">${st.score}</span></span>
+        <span>❤️ <span class="game-score-val">${st.lives}</span></span>
+      </div>
+      <div class="game-display" style="font-size:3rem">${ok?'✅':'❌'}</div>
+      <div class="${ok?'game-result-ok':'game-result-ng'}">${ok?'정답! 대단해요 🎉':'아쉬워요. 정답: '+st.answer}</div>
+      <div style="display:flex;margin-top:16px;">
+        ${st.lives > 0 ? `<button class="game-btn" onclick="memoryNext(${ok})">다음 ▶</button>` : `<button class="game-btn" onclick="memoryReset()">다시 시작</button>`}
+      </div>`;
+  }
+}
+
+function memoryShow() { gameState.phase='show'; renderGame(); }
+
+function memoryCheck() {
+  const val = document.getElementById('memInput')?.value.trim();
+  if (!val) return;
+  const ok = val === gameState.answer;
+  gameState.lastOk = ok;
+  if (ok) { gameState.score += gameState.level * 10; }
+  else { gameState.lives--; }
+  gameState.phase = 'result';
+  renderGame();
+}
+
+function memoryNext(levelUp) {
+  if (levelUp && gameState.level < 8) gameState.level++;
+  else if (!levelUp && gameState.level > 3) gameState.level--;
+  gameState.phase = 'show';
+  renderGame();
+}
+
+function memoryReset() { gameState = {}; renderGame(); }
+
+// ========== 2. 스트룹 게임 ==========
+const STROOP_COLORS = [
+  {name:'빨강', color:'#ef4444'},
+  {name:'파랑', color:'#3b82f6'},
+  {name:'초록', color:'#22c55e'},
+  {name:'노랑', color:'#eab308'},
+];
+
+function renderStroopGame() {
+  const area = document.getElementById('gameArea');
+  const st = gameState;
+  if (!st.score) { st.score=0; st.round=0; st.maxRound=10; st.correct=0; }
+
+  if (st.round >= st.maxRound) {
+    area.innerHTML = `
+      <div class="level-badge">🎨 스트룹 완료!</div>
+      <div class="game-display" style="font-size:3rem">🏆</div>
+      <div style="font-size:1.3rem;font-weight:900;color:var(--navy);margin:8px 0">${st.correct} / ${st.maxRound}</div>
+      <div class="game-msg">정답률 ${Math.round(st.correct/st.maxRound*100)}%<br>${st.correct>=8?'훌륭해요! 억제 제어 능력이 뛰어납니다 🎉':st.correct>=5?'꽤 잘하셨어요!':'꾸준히 연습해보세요!'}</div>
+      <button class="game-btn" onclick="stroopReset()">다시 하기</button>`;
+    return;
+  }
+
+  const wordIdx  = Math.floor(Math.random()*4);
+  const colorIdx = Math.floor(Math.random()*4);
+  st.currentWordIdx  = wordIdx;
+  st.currentColorIdx = colorIdx;
+
+  area.innerHTML = `
+    <div class="level-badge">🎨 스트룹 · ${st.round+1}/${st.maxRound}</div>
+    <div class="game-score-bar" style="width:100%">
+      <span>점수 <span class="game-score-val">${st.score}</span></span>
+      <span>정답 <span class="game-score-val">${st.correct}/${st.round}</span></span>
+    </div>
+    <div class="game-msg" style="margin-bottom:4px">글자의 <strong>색깔</strong>을 선택하세요<br><span style="font-size:0.75rem;color:var(--dim)">(글자 내용이 아닌 색깔!)</span></div>
+    <div class="stroop-word" style="color:${STROOP_COLORS[colorIdx].color}">${STROOP_COLORS[wordIdx].name}</div>
+    <div class="stroop-opts">
+      ${STROOP_COLORS.map((c,i) => `
+        <button class="stroop-btn"
+          style="background:${c.color}22;border-color:${c.color};color:${c.color}"
+          onclick="stroopAnswer(${i})">${c.name}</button>
+      `).join('')}
+    </div>`;
+}
+
+function stroopAnswer(idx) {
+  const st = gameState;
+  const ok = idx === st.currentColorIdx;
+  if (ok) { st.score += 20; st.correct++; }
+  st.round++;
+
+  const btns = document.querySelectorAll('.stroop-btn');
+  btns.forEach((b,i) => {
+    b.onclick = null;
+    if (i === st.currentColorIdx) b.style.outline = '3px solid ' + STROOP_COLORS[i].color;
+    if (i === idx && !ok) b.style.opacity = '0.4';
+  });
+
+  setTimeout(() => renderStroopGame(), 600);
+}
+
+function stroopReset() { gameState = {}; renderStroopGame(); }
+
+// ========== 3. 사이먼 게임 (순서 기억) ==========
+const SIMON_COLORS = [
+  {color:'#ef4444', lit:'#fca5a5', emoji:'🔴'},
+  {color:'#3b82f6', lit:'#93c5fd', emoji:'🔵'},
+  {color:'#22c55e', lit:'#86efac', emoji:'🟢'},
+  {color:'#eab308', lit:'#fde047', emoji:'🟡'},
+];
+
+function renderSimonGame() {
+  const area = document.getElementById('gameArea');
+  const st = gameState;
+  if (!st.sequence) { st.sequence=[]; st.level=0; st.score=0; st.phase='start'; }
+
+  area.innerHTML = `
+    <div class="level-badge">🔔 순서 기억 · 레벨 ${st.level}</div>
+    <div class="game-score-bar" style="width:100%">
+      <span>레벨 <span class="game-score-val">${st.level}</span></span>
+      <span>점수 <span class="game-score-val">${st.score}</span></span>
+    </div>
+    <div class="game-msg" id="simonMsg">${st.phase==='start'?'버튼을 보고 순서를 기억하세요!':'순서대로 누르세요!'}</div>
+    <div class="simon-grid" id="simonGrid">
+      ${SIMON_COLORS.map((c,i) => `
+        <button class="simon-btn" id="simonBtn${i}"
+          style="background:${c.color}"
+          onclick="simonPress(${i})">${c.emoji}</button>
+      `).join('')}
+    </div>
+    ${st.phase==='start'?`<button class="game-btn" onclick="simonStart()">시작 ▶</button>`:''}
+  `;
+}
+
+function simonStart() {
+  const st = gameState;
+  st.sequence.push(Math.floor(Math.random()*4));
+  st.userSeq = [];
+  st.phase = 'show';
+  simonPlaySequence();
+}
+
+function simonPlaySequence() {
+  const st = gameState;
+  let i = 0;
+  document.getElementById('simonMsg').textContent = '잘 보세요...';
+  document.querySelectorAll('.simon-btn').forEach(b => b.style.pointerEvents='none');
+
+  const play = () => {
+    if (i >= st.sequence.length) {
+      st.phase = 'input';
+      st.userSeq = [];
+      document.getElementById('simonMsg').textContent = '순서대로 누르세요!';
+      document.querySelectorAll('.simon-btn').forEach(b => b.style.pointerEvents='auto');
+      return;
+    }
+    const idx = st.sequence[i];
+    const btn = document.getElementById('simonBtn'+idx);
+    if (btn) {
+      btn.classList.add('lit');
+      btn.style.background = SIMON_COLORS[idx].lit;
+      setTimeout(() => {
+        btn.classList.remove('lit');
+        btn.style.background = SIMON_COLORS[idx].color;
+        i++;
+        setTimeout(play, 300);
+      }, 600);
+    }
+  };
+  setTimeout(play, 500);
+}
+
+function simonPress(idx) {
+  const st = gameState;
+  if (st.phase !== 'input') return;
+  st.userSeq.push(idx);
+
+  const btn = document.getElementById('simonBtn'+idx);
+  if (btn) {
+    btn.classList.add('lit');
+    btn.style.background = SIMON_COLORS[idx].lit;
+    setTimeout(() => {
+      btn.classList.remove('lit');
+      btn.style.background = SIMON_COLORS[idx].color;
+    }, 200);
+  }
+
+  const pos = st.userSeq.length - 1;
+  if (st.userSeq[pos] !== st.sequence[pos]) {
+    // 틀림
+    st.phase = 'fail';
+    document.getElementById('simonMsg').textContent = `❌ 틀렸어요! ${st.level}단계까지 성공`;
+    document.querySelectorAll('.simon-btn').forEach(b => b.style.pointerEvents='none');
+    const area = document.getElementById('gameArea');
+    area.innerHTML += `<button class="game-btn" style="margin-top:12px" onclick="simonReset()">다시 시작</button>`;
+    return;
+  }
+
+  if (st.userSeq.length === st.sequence.length) {
+    st.score += st.sequence.length * 10;
+    st.level++;
+    document.getElementById('simonMsg').textContent = '✅ 정답! 다음 단계...';
+    document.querySelectorAll('.simon-btn').forEach(b => b.style.pointerEvents='none');
+    setTimeout(() => simonStart(), 1000);
+  }
+}
+
+function simonReset() { gameState = {}; renderSimonGame(); }
+
+// ========== 4. 틀린 그림 찾기 ==========
+const SPOT_SETS = [
+  { items: ['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🥝'], diff: [2, '🫐'] },
+  { items: ['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼'], diff: [4, '🐸'] },
+  { items: ['⭐','🌙','☀️','🌈','⚡','❄️','🌸','🌺'], diff: [6, '🎃'] },
+  { items: ['🚗','🚕','🚙','🚌','🚎','🏎️','🚐','🚑'], diff: [3, '✈️'] },
+  { items: ['🎸','🎹','🎺','🎻','🥁','🪕','🎷','🪗'], diff: [1, '📱'] },
+];
+
+function renderSpotGame() {
+  const area = document.getElementById('gameArea');
+  const st = gameState;
+  if (!st.score) { st.score=0; st.round=0; st.maxRound=5; }
+
+  if (st.round >= st.maxRound) {
+    area.innerHTML = `
+      <div class="level-badge">🔍 틀린 그림 완료!</div>
+      <div class="game-display" style="font-size:3rem">🏆</div>
+      <div style="font-size:1.3rem;font-weight:900;color:var(--navy)">${st.score}점</div>
+      <div class="game-msg">${st.score>=400?'완벽해요! 주의력이 뛰어납니다 🎉':st.score>=200?'잘 하셨어요!':'꾸준히 연습해보세요!'}</div>
+      <button class="game-btn" onclick="spotReset()">다시 하기</button>`;
+    return;
+  }
+
+  const set = SPOT_SETS[st.round % SPOT_SETS.length];
+  const leftItems  = [...set.items];
+  const rightItems = [...set.items];
+  rightItems[set.diff[0]] = set.diff[1];
+  st.diffIdx = set.diff[0];
+  st.diffPanel = 'right';
+  st.answered = false;
+
+  area.innerHTML = `
+    <div class="level-badge">🔍 틀린 그림 · ${st.round+1}/${st.maxRound}</div>
+    <div class="game-score-bar" style="width:100%">
+      <span>점수 <span class="game-score-val">${st.score}</span></span>
+    </div>
+    <div class="game-msg" style="margin-bottom:12px">오른쪽에서 <strong>다른 그림</strong>을 찾아 클릭하세요!</div>
+    <div class="spot-grid">
+      <div class="spot-panel">
+        <div class="spot-panel-title">원본</div>
+        <div class="spot-items">${leftItems.map((em,i)=>`<span class="spot-item">${em}</span>`).join('')}</div>
+      </div>
+      <div class="spot-panel">
+        <div class="spot-panel-title">찾아보세요 👀</div>
+        <div class="spot-items">${rightItems.map((em,i)=>`<span class="spot-item" onclick="spotClick(${i},this)">${em}</span>`).join('')}</div>
+      </div>
+    </div>`;
+}
+
+function spotClick(idx, el) {
+  const st = gameState;
+  if (st.answered) return;
+  st.answered = true;
+  const ok = idx === st.diffIdx;
+  el.classList.add(ok ? 'correct-pick' : 'wrong-pick');
+  if (ok) st.score += 100;
+
+  const msg = document.querySelector('.game-msg');
+  msg.innerHTML = ok ? '<span class="game-result-ok">✅ 찾았어요! +100점</span>' : '<span class="game-result-ng">❌ 틀렸어요!</span>';
+
+  setTimeout(() => { st.round++; renderSpotGame(); }, 900);
+}
+
+function spotReset() { gameState = {}; renderSpotGame(); }
+
+// ========== 5. 계산 속도 게임 ==========
+function renderCalcGame() {
+  const area = document.getElementById('gameArea');
+  const st = gameState;
+  if (!st.phase) { st.phase='start'; st.score=0; st.round=0; st.maxRound=10; st.correct=0; st.timeLeft=10; }
+
+  if (st.round >= st.maxRound) {
+    area.innerHTML = `
+      <div class="level-badge">⚡ 계산속도 완료!</div>
+      <div class="game-display" style="font-size:3rem">🏆</div>
+      <div style="font-size:1.3rem;font-weight:900;color:var(--navy)">${st.correct} / ${st.maxRound}</div>
+      <div class="game-msg">점수: ${st.score}점<br>${st.correct>=9?'번개처럼 빠르네요! ⚡':st.correct>=6?'좋은 처리속도예요!':'꾸준히 연습해보세요!'}</div>
+      <button class="game-btn" onclick="calcReset()">다시 하기</button>`;
+    return;
+  }
+
+  if (st.phase === 'start') {
+    area.innerHTML = `
+      <div class="level-badge">⚡ 계산 속도</div>
+      <div class="game-msg">10초 안에 계산하세요!<br>10문제 도전!</div>
+      <button class="game-btn" onclick="calcNext()">시작 ▶</button>`;
+    return;
+  }
+
+  // 문제 생성
+  if (!st.currentQ) calcMakeQ();
+
+  area.innerHTML = `
+    <div class="level-badge">⚡ ${st.round+1}/${st.maxRound}</div>
+    <div class="game-score-bar" style="width:100%">
+      <span>점수 <span class="game-score-val">${st.score}</span></span>
+      <span>정답 <span class="game-score-val">${st.correct}/${st.round}</span></span>
+      <span id="calcTimer" style="color:${st.timeLeft<=3?'#ef4444':'var(--dim)'}">⏱ <span class="game-score-val" style="color:${st.timeLeft<=3?'#ef4444':'var(--navy)'}">${st.timeLeft}</span>초</span>
+    </div>
+    <div class="game-display">${st.currentQ.text}</div>
+    <input class="game-input" id="calcInput" type="number" placeholder="답 입력"
+      onkeydown="if(event.key==='Enter')calcCheck()">
+    <button class="game-btn" onclick="calcCheck()">확인</button>`;
+
+  document.getElementById('calcInput')?.focus();
+
+  // 타이머
+  clearInterval(st.timer);
+  st.timeLeft = 10;
+  st.timer = setInterval(() => {
+    st.timeLeft--;
+    const timerEl = document.getElementById('calcTimer');
+    if (timerEl) timerEl.innerHTML = `⏱ <span class="game-score-val" style="color:${st.timeLeft<=3?'#ef4444':'var(--navy)'}">${st.timeLeft}</span>초`;
+    if (st.timeLeft <= 0) {
+      clearInterval(st.timer);
+      st.round++;
+      st.currentQ = null;
+      renderCalcGame();
+    }
+  }, 1000);
+}
+
+function calcMakeQ() {
+  const ops = ['+','-','×'];
+  const op = ops[Math.floor(Math.random()*ops.length)];
+  let a, b, ans;
+  if (op==='+') { a=Math.floor(Math.random()*50)+10; b=Math.floor(Math.random()*50)+10; ans=a+b; }
+  else if (op==='-') { a=Math.floor(Math.random()*50)+30; b=Math.floor(Math.random()*30)+5; ans=a-b; }
+  else { a=Math.floor(Math.random()*9)+2; b=Math.floor(Math.random()*9)+2; ans=a*b; }
+  gameState.currentQ = { text:`${a} ${op} ${b} = ?`, answer:ans };
+}
+
+function calcCheck() {
+  const st = gameState;
+  clearInterval(st.timer);
+  const val = parseInt(document.getElementById('calcInput')?.value);
+  const ok = val === st.currentQ?.answer;
+  if (ok) { st.score += Math.max(10, st.timeLeft*10); st.correct++; }
+  st.round++;
+  st.currentQ = null;
+  renderCalcGame();
+}
+
+function calcNext() { gameState.phase='play'; renderCalcGame(); }
+function calcReset() { clearInterval(gameState.timer); gameState={}; renderCalcGame(); }
+
+// 게임 초기화 (리포트 표시 시 호출)
+function initGames() {
+  gameState = {};
+  currentGame = 'memory';
+  renderGame();
+}
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function restartTest() {
+  curSection=0; curQ=0; cgQ=0;
+  Object.keys(scores).forEach(k => { scores[k]=0; sectionScores[k]=0; });
+  answered=false; answeredCount=0;
+  caregiverAnswers=[]; caregiverRisk=0; recalledWords=[];
+  cogScore100=0; eegScore100=0; eegEntered=false;
+  examMode='eeg'; userType='self';
+  document.getElementById('urgentBox').style.display='none';
+  document.getElementById('integratedSection').style.display='none';
+  document.getElementById('caregiverResult').style.display='none';
+  // 선택 초기화
+  document.querySelectorAll('.user-card').forEach(c=>{
+    c.classList.remove('selected');
+    c.style.borderColor=''; c.style.background='';
+  });
+  showPage('page-start');
+}
+</script>
+</body>
+</html>
