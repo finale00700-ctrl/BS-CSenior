@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>NeuroCheck — 치매 스크리닝</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NeuroCheck">
+<meta name="theme-color" content="#0d2137">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:wght@700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f3f0;--surface:#fff;--navy:#1a1035;--navy2:#2d1f5e;--teal:#0891b2;--teal-light:#e0f7fa;--rose:#be123c;--rose-light:#fff1f2;--green:#15803d;--green-light:#dcfce7;--text:#1e1b2e;--dim:#6b7280;--border:#e5e7eb;--shadow:0 4px 24px rgba(26,16,53,0.08);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.page{display:none;min-height:100vh;flex-direction:column;}
+.page.active{display:flex;}
+#page-start{background:#0d2137;align-items:center;justify-content:center;padding:48px 24px;position:relative;overflow:hidden;}
+.nature-bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
+.overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,33,55,0.25) 0%,rgba(13,33,55,0.6) 50%,rgba(13,33,55,0.9) 100%);pointer-events:none;z-index:1;}
+.start-wrap{position:relative;z-index:10;max-width:480px;width:100%;text-align:center;}
+.s-icon{width:76px;height:76px;border-radius:16px;overflow:hidden;margin:0 auto 14px;box-shadow:0 8px 28px rgba(8,145,178,0.35);}
+.brand-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:5px 13px;margin-bottom:18px;}
+.bdot{width:6px;height:6px;border-radius:50%;background:#0891b2;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.btxt{font-family:'Space Mono',monospace;font-size:0.6rem;color:rgba(255,255,255,0.45);letter-spacing:2px;}
+.s-title{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,5vw,2.6rem);color:white;line-height:1.2;margin-bottom:7px;text-shadow:0 2px 18px rgba(0,0,0,0.5);}
+.s-sub{font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:24px;line-height:1.6;}
+.sec-lbl{font-size:0.65rem;color:rgba(255,255,255,0.3);letter-spacing:2px;text-align:left;margin-bottom:7px;}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;}
+.mode-card{background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:13px;padding:16px 10px;cursor:pointer;transition:all 0.2s;text-align:center;}
+.mode-card:hover{border-color:var(--teal);}
+.mode-card.sel{border-color:var(--teal);background:rgba(8,145,178,0.18);box-shadow:0 0 0 1px var(--teal);}
+.mode-emoji{font-size:1.5rem;margin-bottom:5px;}
+.mode-name{font-size:0.82rem;font-weight:700;color:white;margin-bottom:2px;}
+.mode-desc{font-size:0.65rem;color:rgba(255,255,255,0.35);line-height:1.4;}
+.user-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;}
+.user-card{background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.1);border-radius:13px;padding:14px 9px;cursor:pointer;transition:all 0.2s;text-align:center;}
+.user-card:hover{border-color:rgba(255,255,255,0.3);}
+.user-card.sel{border-color:white;background:rgba(255,255,255,0.12);}
+.u-emoji{font-size:1.3rem;margin-bottom:4px;}
+.u-name{font-size:0.78rem;font-weight:700;color:white;margin-bottom:2px;}
+.u-desc{font-size:0.62rem;color:rgba(255,255,255,0.3);line-height:1.3;}
+.fields{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.si{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:11px;padding:12px 15px;color:white;font-family:'Noto Sans KR',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;width:100%;}
+.si::placeholder{color:rgba(255,255,255,0.22);}
+.si:focus{border-color:var(--teal);}
+.si option{background:#1a1035;}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.go-btn{width:100%;background:var(--teal);border:none;color:white;padding:15px;border-radius:12px;font-family:'Noto Sans KR',sans-serif;font-size:0.98rem;font-weight:700;cursor:pointer;transition:all 0.2s;letter-spacing:1px;position:relative;z-index:10;}
+.go-btn:hover{background:#0e7490;transform:translateY(-2px);box-shadow:0 8px 22px rgba(8,145,178,0.4);}
+.disc{margin-top:14px;font-size:0.65rem;color:rgba(255,255,255,0.18);line-height:1.6;}
+#page-test{background:var(--bg);}
+.t-hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:11px;position:sticky;top:0;z-index:10;box-shadow:0 2px 6px rgba(0,0,0,0.04);}
+.t-logo{font-family:'Space Mono',monospace;font-size:0.7rem;font-weight:700;color:var(--teal);white-space:nowrap;}
+.pw{flex:1;}
+.pl{display:flex;justify-content:space-between;font-size:0.68rem;color:var(--dim);margin-bottom:3px;}
+.pb{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.pf{height:100%;background:linear-gradient(90deg,var(--teal),var(--navy2));border-radius:3px;transition:width 0.4s ease;}
+.sb{margin:16px 16px 0;background:var(--navy);border-radius:13px;padding:15px 17px;display:flex;align-items:center;gap:11px;color:white;}
+.si-ico{font-size:1.5rem;}
+.si-nm{font-size:0.92rem;font-weight:700;margin-bottom:1px;}
+.si-dc{font-size:0.7rem;opacity:0.4;}
+.cb{margin:16px 16px 0;background:linear-gradient(135deg,#7c3aed,#4f46e5);border-radius:13px;padding:15px 17px;display:flex;align-items:center;gap:11px;color:white;}
+.qa{padding:16px;flex:1;}
+.qc{background:var(--surface);border-radius:16px;padding:24px;box-shadow:var(--shadow);border:1px solid var(--border);animation:su 0.3s ease;}
+@keyframes su{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.qn{font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--dim);letter-spacing:2px;margin-bottom:11px;}
+.qi{font-size:0.78rem;color:var(--teal);background:var(--teal-light);padding:7px 12px;border-radius:7px;margin-bottom:14px;line-height:1.5;}
+.qt{font-size:clamp(0.9rem,2.3vw,1.1rem);font-weight:700;margin-bottom:18px;line-height:1.55;white-space:pre-line;}
+.opts{display:flex;flex-direction:column;gap:7px;}
+.ob{background:var(--bg);border:2px solid var(--border);border-radius:10px;padding:12px 14px;text-align:left;font-family:'Noto Sans KR',sans-serif;font-size:0.85rem;color:var(--text);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:9px;}
+.ob:hover{border-color:var(--teal);background:var(--teal-light);transform:translateX(3px);}
+.ob.sel{border-color:var(--teal);background:var(--teal-light);color:var(--teal);font-weight:700;}
+.ob.ok{border-color:var(--green);background:var(--green-light);color:var(--green);}
+.ob.ng{border-color:var(--rose);background:var(--rose-light);color:var(--rose);}
+.ol{width:22px;height:22px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:700;flex-shrink:0;transition:all 0.2s;}
+.ob.sel .ol{background:var(--teal);color:white;}
+.ob.ok .ol{background:var(--green);color:white;}
+.ob.ng .ol{background:var(--rose);color:white;}
+.sa{width:100%;background:var(--bg);border:2px solid var(--border);border-radius:10px;padding:12px 14px;font-family:'Noto Sans KR',sans-serif;font-size:0.95rem;outline:none;transition:border-color 0.2s;color:var(--text);}
+.sa:focus{border-color:var(--teal);}
+.fb{margin-top:11px;padding:9px 13px;border-radius:8px;font-size:0.78rem;font-weight:500;display:none;animation:po 0.2s ease;}
+@keyframes po{from{transform:scale(0.96);opacity:0}to{transform:scale(1);opacity:1}}
+.fb.ok{background:var(--green-light);color:#166534;border:1px solid #bbf7d0;}
+.fb.ng{background:var(--rose-light);color:#9f1239;border:1px solid #fecdd3;}
+.tf{padding:12px 16px 26px;display:flex;justify-content:flex-end;gap:8px;}
+.bn{background:var(--navy);color:white;border:none;padding:12px 24px;border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.bn:hover{background:var(--navy2);transform:translateY(-1px);}
+.bn:disabled{opacity:0.3;cursor:default;transform:none;}
+.bsk{background:transparent;color:var(--dim);border:1px solid var(--border);padding:12px 14px;border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.2s;}
+.bsk:hover{background:var(--bg);}
+#page-report{background:var(--bg);}
+.rh{background:var(--navy);color:white;padding:30px 20px 24px;}
+.rb-lbl{font-family:'Space Mono',monospace;font-size:0.6rem;color:rgba(255,255,255,0.3);letter-spacing:2px;margin-bottom:9px;}
+.rt{font-family:'Playfair Display',serif;font-size:clamp(1.2rem,3.5vw,1.7rem);margin-bottom:3px;}
+.rm{font-size:0.75rem;opacity:0.32;}
+.rb{padding:20px;max-width:720px;margin:0 auto;}
+.ub{background:var(--rose-light);border:1.5px solid #fecdd3;border-radius:13px;padding:14px 16px;margin-bottom:18px;display:none;}
+.ut{font-weight:700;color:var(--rose);margin-bottom:5px;font-size:0.85rem;}
+.ud{font-size:0.77rem;color:#9f1239;line-height:1.6;}
+.tc{background:var(--navy);border-radius:20px;padding:26px;margin-bottom:18px;color:white;position:relative;overflow:hidden;box-shadow:0 10px 40px rgba(26,16,53,0.14);}
+.tc::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(8,145,178,0.18) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(124,58,237,0.12) 0%,transparent 50%);pointer-events:none;}
+.ti{position:relative;z-index:1;}
+.tl{font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:3px;opacity:0.32;margin-bottom:16px;}
+.tm{display:flex;align-items:center;gap:18px;margin-bottom:18px;}
+.gw{position:relative;width:96px;height:96px;flex-shrink:0;}
+.gs{transform:rotate(-90deg);}
+.gbg{fill:none;stroke:rgba(255,255,255,0.07);stroke-width:9;}
+.gf{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(0.34,1.56,0.64,1);}
+.gt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.gn{font-size:1.6rem;font-weight:900;line-height:1;font-family:'Space Mono',monospace;}
+.gm{font-size:0.58rem;opacity:0.32;margin-top:1px;}
+.gb{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:100px;font-size:0.78rem;font-weight:700;margin-bottom:6px;}
+.g1{background:rgba(34,197,94,0.2);color:#4ade80;}
+.g2{background:rgba(59,130,246,0.2);color:#60a5fa;}
+.g3{background:rgba(251,191,36,0.2);color:#fbbf24;}
+.g4{background:rgba(249,115,22,0.2);color:#fb923c;}
+.g5{background:rgba(239,68,68,0.2);color:#f87171;}
+.gd{font-size:0.75rem;opacity:0.48;line-height:1.5;}
+.bk{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.bi{background:rgba(255,255,255,0.05);border-radius:10px;padding:10px 12px;}
+.bl{font-size:0.6rem;opacity:0.32;font-family:'Space Mono',monospace;letter-spacing:1px;margin-bottom:4px;}
+.bw{display:flex;align-items:center;gap:6px;}
+.bb{flex:1;height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;}
+.bf{height:100%;border-radius:3px;transition:width 1s cubic-bezier(0.34,1.56,0.64,1);}
+.bs{font-size:0.72rem;font-weight:700;font-family:'Space Mono',monospace;min-width:32px;text-align:right;}
+.bwt{font-size:0.56rem;opacity:0.28;margin-top:2px;}
+.ep{background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.13);border-radius:8px;padding:8px 12px;font-size:0.7rem;opacity:0.42;text-align:center;margin-top:6px;}
+.grb{display:flex;gap:3px;margin-top:12px;}
+.gi{flex:1;height:4px;border-radius:2px;opacity:0.22;transition:opacity 0.3s,transform 0.3s;}
+.gi.act{opacity:1;transform:scaleY(1.6);}
+.slbl{font-size:0.68rem;color:var(--dim);letter-spacing:2px;font-family:'Space Mono',monospace;margin-bottom:9px;}
+.dc{background:var(--surface);border-radius:13px;padding:16px 18px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:9px;}
+.dt{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.di{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0;}
+.dn{font-weight:700;font-size:0.85rem;}
+.ds{font-size:0.68rem;color:var(--dim);}
+.dbar{display:flex;align-items:center;gap:9px;}
+.dbg{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden;}
+.dbf{height:100%;border-radius:4px;transition:width 1s cubic-bezier(0.34,1.56,0.64,1);}
+.dsc{font-size:0.8rem;font-weight:700;min-width:32px;text-align:right;}
+.dlv{font-size:0.66rem;padding:2px 8px;border-radius:20px;font-weight:600;margin-left:auto;}
+.cr{background:#faf5ff;border:1px solid #e9d5ff;border-radius:13px;padding:16px;margin-bottom:18px;}
+.ct{font-size:0.68rem;letter-spacing:2px;color:#7e22ce;font-family:'Space Mono',monospace;margin-bottom:11px;}
+.ci{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:0.78rem;line-height:1.5;}
+.cdot{width:6px;height:6px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.es{background:var(--surface);border-radius:16px;padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:18px;}
+.et{font-size:0.88rem;font-weight:700;margin-bottom:3px;}
+.esub{font-size:0.72rem;color:var(--dim);margin-bottom:14px;}
+.eg{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px;}
+.ec{background:var(--bg);border:1.5px solid var(--border);border-radius:11px;padding:13px 9px;text-align:center;display:flex;flex-direction:column;gap:4px;transition:border-color 0.2s;}
+.ec:focus-within{border-color:var(--teal);background:var(--teal-light);}
+.eci{font-size:1.1rem;}
+.ecn{font-size:0.7rem;font-weight:700;line-height:1.3;}
+.ecu{font-size:0.65rem;color:var(--teal);font-weight:600;}
+.en{width:100%;text-align:center;font-size:1rem;font-weight:700;padding:6px;background:transparent;border:none;outline:none;color:var(--text);font-family:'Space Mono',monospace;}
+.ecr{font-size:0.58rem;color:var(--dim);line-height:1.4;}
+.eb{width:100%;background:linear-gradient(135deg,var(--teal),var(--navy2));color:white;border:none;padding:12px;border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.eb:hover{opacity:0.9;transform:translateY(-1px);}
+.ig{background:var(--navy);border-radius:16px;padding:20px;color:white;margin-bottom:18px;display:none;}
+.it{font-size:0.65rem;letter-spacing:2px;opacity:0.32;margin-bottom:12px;font-family:'Space Mono',monospace;}
+.ii{display:flex;gap:9px;margin-bottom:9px;padding:11px;background:rgba(255,255,255,0.05);border-radius:10px;}
+.io{font-size:0.95rem;flex-shrink:0;}
+.ix{font-size:0.78rem;line-height:1.6;opacity:0.85;}
+.ix strong{color:#67e8f9;}
+.rs{background:var(--surface);border-radius:16px;padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:18px;}
+.rt2{font-weight:700;font-size:0.9rem;margin-bottom:12px;}
+.ri{display:flex;gap:11px;padding:12px;border-radius:10px;margin-bottom:8px;border:1px solid var(--border);align-items:flex-start;}
+.ricon{font-size:1rem;flex-shrink:0;}
+.rn{font-weight:600;font-size:0.82rem;margin-bottom:2px;}
+.rd{font-size:0.72rem;color:var(--dim);line-height:1.5;}
+.gs2{background:var(--surface);border-radius:16px;padding:20px;box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:18px;overflow:hidden;}
+.gh{font-size:0.9rem;font-weight:700;margin-bottom:2px;}
+.ghs{font-size:0.7rem;color:var(--dim);margin-bottom:13px;}
+.gtabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;}
+.gtab{background:var(--bg);border:1.5px solid var(--border);border-radius:100px;padding:5px 12px;font-size:0.72rem;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all 0.2s;color:var(--dim);font-weight:500;}
+.gtab.act{background:var(--navy);border-color:var(--navy);color:white;font-weight:700;}
+.gar{background:var(--bg);border-radius:13px;padding:18px;min-height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.gsb{display:flex;justify-content:space-between;width:100%;margin-bottom:12px;font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--dim);}
+.gsv{color:var(--navy);font-weight:700;font-size:0.82rem;}
+.gdp{font-size:clamp(1.7rem,6vw,2.8rem);font-weight:900;color:var(--navy);letter-spacing:5px;margin:10px 0;font-family:'Space Mono',monospace;min-height:46px;display:flex;align-items:center;justify-content:center;}
+.ginp{width:100%;max-width:210px;background:white;border:2px solid var(--border);border-radius:10px;padding:10px 13px;font-size:1rem;font-weight:700;text-align:center;font-family:'Space Mono',monospace;outline:none;transition:border-color 0.2s;color:var(--navy);}
+.ginp:focus{border-color:var(--teal);}
+.gbtn{background:var(--navy);color:white;border:none;padding:10px 22px;border-radius:100px;font-family:'Noto Sans KR',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.2s;margin-top:9px;}
+.gbtn:hover{background:var(--navy2);transform:translateY(-2px);}
+.gms{font-size:0.78rem;color:var(--dim);margin-top:7px;line-height:1.5;}
+.gok{color:var(--green);font-weight:700;font-size:0.9rem;}
+.gng{color:var(--rose);font-weight:700;font-size:0.9rem;}
+.glv{display:inline-flex;align-items:center;background:var(--navy);color:white;padding:3px 10px;border-radius:100px;font-size:0.64rem;font-family:'Space Mono',monospace;margin-bottom:6px;}
+.swrd{font-size:clamp(1.7rem,6vw,2.6rem);font-weight:900;margin:10px 0;}
+.sopts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%;max-width:290px;margin-top:5px;}
+.sbtn{padding:12px;border-radius:10px;border:2px solid;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.15s;font-family:'Noto Sans KR',sans-serif;}
+.simgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0;}
+.simb{width:72px;height:72px;border-radius:13px;border:none;cursor:pointer;opacity:0.28;transition:opacity 0.15s,transform 0.1s;font-size:1.3rem;}
+.simb.lit{opacity:1;transform:scale(1.08);box-shadow:0 0 16px rgba(0,0,0,0.18);}
+.spgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;}
+.spp{background:white;border-radius:10px;padding:13px;border:2px solid var(--border);}
+.sppt{font-size:0.65rem;color:var(--dim);margin-bottom:7px;letter-spacing:1px;}
+.spitems{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;}
+.spit{font-size:1.4rem;cursor:pointer;padding:3px;border-radius:6px;transition:all 0.15s;border:2px solid transparent;}
+.spit:hover{background:var(--bg);}
+.spit.spok{border-color:var(--green);background:var(--green-light);}
+.spit.spng{border-color:var(--rose);background:var(--rose-light);}
+.ra{display:flex;gap:9px;margin-bottom:36px;flex-wrap:wrap;}
+.bpr{flex:1;background:var(--navy);color:white;border:none;padding:14px;border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.bpr:hover{opacity:0.9;}
+.bre{flex:1;background:transparent;color:var(--text);border:1.5px solid var(--border);padding:14px;border-radius:10px;font-family:'Noto Sans KR',sans-serif;font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
+.bre:hover{background:var(--bg);}
+@media print{.gs2,.ra,.es{display:none!important;}.ig{display:block!important;}}
+@media(max-width:480px){.mode-grid,.user-grid,.bk{grid-template-columns:1fr 1fr;}.eg{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- 시작 페이지 -->
+<div id="page-start" class="page active">
+  <svg class="nature-bg" viewBox="0 0 390 844" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="skyG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#0a1628"/><stop offset="55%" stop-color="#1a3a5c"/><stop offset="90%" stop-color="#4a90a4"/><stop offset="100%" stop-color="#7ec8c8"/></linearGradient>
+      <linearGradient id="wG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#7ec8c8" stop-opacity="0.9"/><stop offset="100%" stop-color="#0d1f30"/></linearGradient>
+      <radialGradient id="mgG" cx="65%" cy="18%" r="18%"><stop offset="0%" stop-color="#fffde7" stop-opacity="0.4"/><stop offset="100%" stop-color="#fffde7" stop-opacity="0"/></radialGradient>
+    </defs>
+    <rect width="390" height="844" fill="url(#skyG)"/>
+    <ellipse cx="252" cy="145" rx="75" ry="75" fill="url(#mgG)"/>
+    <circle cx="252" cy="145" r="25" fill="#fffde7" opacity="0.9"/>
+    <circle cx="246" cy="140" r="25" fill="#1a3a5c" opacity="0.35"/>
+    <g fill="#fffde7" opacity="0.75"><circle cx="30" cy="40" r="1.1"/><circle cx="60" cy="18" r="0.8"/><circle cx="90" cy="52" r="1.3"/><circle cx="150" cy="14" r="1.0"/><circle cx="50" cy="98" r="1.1"/><circle cx="110" cy="88" r="0.9"/><circle cx="170" cy="82" r="1.2"/><circle cx="300" cy="32" r="1.0"/><circle cx="330" cy="58" r="0.8"/><circle cx="360" cy="22" r="1.2"/><circle cx="72" cy="46" r="1.8" opacity="0.9"/><circle cx="318" cy="76" r="1.6" opacity="0.9"/></g>
+    <path d="M0 375 Q80 300 160 320 Q240 280 320 305 Q360 285 390 305 L390 430 L0 430Z" fill="#0f2a42" opacity="0.65"/>
+    <path d="M0 405 Q70 345 150 365 Q230 320 310 350 Q355 330 390 355 L390 450 L0 450Z" fill="#122f4a" opacity="0.82"/>
+    <path d="M0 438 Q60 388 130 408 Q210 368 290 398 Q345 378 390 408 L390 510 L0 510Z" fill="#0d2035" opacity="0.95"/>
+    <rect x="0" y="495" width="390" height="349" fill="url(#wG)"/>
+    <g opacity="0.14" stroke="#7ec8c8" stroke-width="1" fill="none"><path d="M60 535 Q100 531 140 535 Q180 539 220 535"/><path d="M30 570 Q80 566 130 570 Q180 574 230 570"/><path d="M180 600 Q230 596 280 600 Q330 604 370 600"/></g>
+    <polygon points="0,496 28,375 56,496" fill="#051520" opacity="0.95"/>
+    <polygon points="40,498 72,358 104,498" fill="#061822" opacity="0.95"/>
+    <polygon points="286,496 318,368 350,496" fill="#051520" opacity="0.95"/>
+    <polygon points="334,498 362,375 390,498" fill="#061822" opacity="0.95"/>
+    <g fill="#c8ff8c"><circle cx="165" cy="468" r="2"><animate attributeName="opacity" values="0.7;0.1;0.7" dur="2.3s" repeatCount="indefinite"/></circle><circle cx="228" cy="452" r="1.6"><animate attributeName="opacity" values="0.1;0.7;0.1" dur="1.9s" repeatCount="indefinite"/></circle><circle cx="258" cy="474" r="1.8"><animate attributeName="opacity" values="0.6;0.1;0.6" dur="3s" repeatCount="indefinite"/></circle></g>
+    <circle cx="72" cy="46" r="1.4" fill="#fffde7"><animate attributeName="opacity" values="0.9;0.2;0.9" dur="3s" repeatCount="indefinite"/></circle>
+  </svg>
+  <div class="overlay"></div>
+
+  <div class="start-wrap">
+    <div class="s-icon">
+      <svg width="76" height="76" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="ib" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#0a1628"/><stop offset="100%" stop-color="#0d2040"/></linearGradient><linearGradient id="iw" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#0891b2" stop-opacity="0.3"/><stop offset="50%" stop-color="#0891b2"/><stop offset="100%" stop-color="#0891b2" stop-opacity="0.3"/></linearGradient><clipPath id="ic"><rect width="1024" height="1024" rx="224" ry="224"/></clipPath></defs>
+        <g clip-path="url(#ic)"><rect width="1024" height="1024" fill="url(#ib)"/><path d="M0 580 Q256 500 512 540 Q768 490 1024 520 L1024 680 L0 680Z" fill="#0d2035"/><rect x="0" y="620" width="1024" height="404" fill="#0d2f45"/><circle cx="720" cy="210" r="68" fill="#fffde7" opacity="0.86"/><polyline points="160,512 220,512 258,390 298,634 336,448 374,556 412,512 450,350 490,672 530,512 568,512 606,420 644,600 682,512 762,512 864,512" fill="none" stroke="url(#iw)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/><circle cx="450" cy="350" r="20" fill="#0891b2" opacity="0.9"/><circle cx="450" cy="350" r="9" fill="white"/><text x="512" y="878" font-family="Georgia,serif" font-size="62" font-weight="900" fill="white" text-anchor="middle" opacity="0.82">NC</text></g>
+      </svg>
+    </div>
+    <div class="brand-badge"><div class="bdot"></div><div class="btxt">NeuroCheck · 치매 스크리닝</div></div>
+    <h1 class="s-title">병원 가기 전<br>먼저 확인하세요</h1>
+    <p class="s-sub">MMSE 기반 · 본인+보호자 검사<br>뇌파 통합 분석 · 뇌훈련 게임</p>
+
+    <div class="sec-lbl">검사 모드</div>
+    <div class="mode-grid">
+      <div class="mode-card sel" id="mEeg">
+        <div class="mode-emoji">🌊🧠</div>
+        <div class="mode-name" style="color:#67e8f9">뇌파+인지 통합</div>
+        <div class="mode-desc">인지 70% + 뇌파 30%</div>
+      </div>
+      <div class="mode-card" id="mCog">
+        <div class="mode-emoji">🧠</div>
+        <div class="mode-name">순수 인지검사</div>
+        <div class="mode-desc">인지 100점 만점</div>
+      </div>
+    </div>
+
+    <div class="sec-lbl">응답자</div>
+    <div class="user-grid">
+      <div class="user-card sel" id="uSelf">
+        <div class="u-emoji">👴</div>
+        <div class="u-name">본인 검사</div>
+        <div class="u-desc">본인이 직접 응답</div>
+      </div>
+      <div class="user-card" id="uBoth">
+        <div class="u-emoji">👨‍👩‍👧</div>
+        <div class="u-name">본인+보호자</div>
+        <div class="u-desc">보호자 관찰 추가</div>
+      </div>
+    </div>
+
+    <div class="fields">
+      <input class="si" type="text" id="iName" placeholder="이름">
+      <div class="r2">
+        <input class="si" type="number" id="iAge" placeholder="나이 (세)" min="45" max="100">
+        <select class="si" id="iGender"><option value="">성별</option><option value="남">남자</option><option value="여">여자</option></select>
+      </div>
+      <input class="si" type="text" id="iCG" placeholder="보호자 이름 (선택)">
+      <input class="si" type="text" id="iEx" placeholder="검사자/기관명 (선택)">
+    </div>
+
+    <button class="go-btn" id="goBtn">검사 시작하기 →</button>
+    <p class="disc">※ 이 검사는 의학적 진단이 아닌 참고용 스크리닝입니다.<br>결과에 따라 전문 의료기관 방문을 권고드립니다.</p>
+  </div>
+</div>
+
+<!-- 검사 페이지 -->
+<div id="page-test" class="page">
+  <div class="t-hdr">
+    <div class="t-logo">NeuroCheck</div>
+    <div class="pw">
+      <div class="pl"><span id="secNm">지남력</span><span id="progTx">1/20</span></div>
+      <div class="pb"><div class="pf" id="pFill" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div id="banWrap"></div>
+  <div class="qa">
+    <div class="qc" id="qCard">
+      <div class="qn" id="qNum">문항 1</div>
+      <div class="qi" id="qInstr"></div>
+      <div class="qt" id="qTxt"></div>
+      <div id="qOpts"></div>
+      <div class="fb" id="qFb"></div>
+    </div>
+  </div>
+  <div class="tf">
+    <button class="bsk" onclick="skipQ()">건너뛰기</button>
+    <button class="bn" id="btnN" onclick="nextQ()" disabled>다음 →</button>
+  </div>
+</div>
+
+<!-- 리포트 페이지 -->
+<div id="page-report" class="page">
+  <div class="rh">
+    <div class="rb-lbl">🧠 NeuroCheck · 치매 스크리닝 결과</div>
+    <h1 class="rt" id="rTitle">인지기능 분석 리포트</h1>
+    <div class="rm" id="rMeta"></div>
+  </div>
+  <div class="rb">
+    <div class="ub" id="urgBox"><div class="ut">⚠️ 전문의 상담 강력 권고</div><div class="ud" id="urgDesc"></div></div>
+
+    <div class="tc"><div class="ti">
+      <div class="tl">NEUROCHECK · 종합 인지 점수</div>
+      <div class="tm">
+        <div class="gw">
+          <svg class="gs" width="96" height="96" viewBox="0 0 96 96">
+            <circle class="gbg" cx="48" cy="48" r="40"/>
+            <circle class="gf" id="gFill" cx="48" cy="48" r="40" stroke="#0891b2" stroke-dasharray="251" stroke-dashoffset="251"/>
+          </svg>
+          <div class="gt"><div class="gn" id="gNum">--</div><div class="gm">/ 100</div></div>
+        </div>
+        <div><div class="gb g3" id="gBadge">분석 중...</div><div class="gd" id="gDesc">검사 결과를 분석하고 있습니다</div></div>
+      </div>
+      <div class="bk">
+        <div class="bi"><div class="bl" id="cogLbl">인지검사 (70%)</div><div class="bw"><div class="bb"><div class="bf" id="cogBar" style="width:0%;background:#0891b2"></div></div><div class="bs" id="cogPt" style="color:#67e8f9">--</div></div><div class="bwt">MMSE 기반</div></div>
+        <div class="bi" id="eegBi"><div class="bl">뇌파 (30%)</div><div class="bw"><div class="bb"><div class="bf" id="eegBar" style="width:0%;background:#a78bfa"></div></div><div class="bs" id="eegPt" style="color:#c4b5fd">--</div></div><div class="bwt">Peak α · 알파세기 · Coherence</div></div>
+      </div>
+      <div class="ep" id="ePend">🌊 뇌파 수치 입력 시 종합 점수가 완성됩니다</div>
+      <div class="grb">
+        <div class="gi" id="gb1" style="background:#4ade80"></div>
+        <div class="gi" id="gb2" style="background:#60a5fa"></div>
+        <div class="gi" id="gb3" style="background:#fbbf24"></div>
+        <div class="gi" id="gb4" style="background:#fb923c"></div>
+        <div class="gi" id="gb5" style="background:#f87171"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:0.56rem;opacity:0.28;margin-top:4px;"><span>정상</span><span>양호</span><span>주의</span><span>경각</span><span>위험</span></div>
+    </div></div>
+
+    <div class="slbl">인지검사 영역별 점수</div>
+    <div id="domSec"></div>
+
+    <div class="cr" id="cgRes" style="display:none"><div class="ct">👨‍👩‍👧 보호자 관찰 항목</div><div id="cgBody"></div></div>
+
+    <div class="es" id="eSec">
+      <div class="et">🌊 뉴로스펙 기초율동 (Alpha Peak)</div>
+      <div class="esub">검사 수치 입력 시 인지+뇌파 종합 분석이 생성됩니다</div>
+      <div class="eg">
+        <div class="ec"><div class="eci">📊</div><div class="ecn">Peak α</div><div class="ecu">Hz</div><input class="en" type="number" id="eHz" placeholder="예:9" min="0" max="20" step="0.1"><div class="ecr">정상 8~11Hz<br>위험 7Hz↓</div></div>
+        <div class="ec"><div class="eci">⚡</div><div class="ecn">알파 세기</div><div class="ecu">μV</div><input class="en" type="number" id="eUv" placeholder="예:4" min="0" max="50" step="0.1"><div class="ecr">정상 3~8μV<br>감소 시 주의</div></div>
+        <div class="ec"><div class="eci">🔗</div><div class="ecn">Coherence</div><div class="ecu">0~1.0</div><input class="en" type="number" id="eCoh" placeholder="예:0.8" min="0" max="1" step="0.01"><div class="ecr">정상 0.8↑<br>위험 0.6↓</div></div>
+      </div>
+      <button class="eb" onclick="doEEG()">🧠 뇌파 + 인지 통합 분석</button>
+    </div>
+
+    <div class="ig" id="igSec"><div class="it">🔬 EEG + 인지 통합 분석</div><div id="igList"></div></div>
+
+    <div class="rs"><div class="rt2">📋 권고 사항</div><div id="recList"></div></div>
+
+    <div class="gs2">
+      <div class="gh">🎮 뇌훈련 게임</div>
+      <div class="ghs">매일 5~10분 · 치매 예방 · 인지 기능 유지</div>
+      <div class="gtabs" id="gameTabs">
+        <button class="gtab act" data-game="mem">🔢 숫자기억</button>
+        <button class="gtab" data-game="str">🎨 스트룹</button>
+        <button class="gtab" data-game="sim">🔔 순서기억</button>
+        <button class="gtab" data-game="spt">🔍 틀린그림</button>
+        <button class="gtab" data-game="cal">⚡ 계산속도</button>
+      </div>
+      <div class="gar" id="gArea"></div>
+    </div>
+
+    <div class="ra">
+      <button class="bpr" onclick="window.print()">🖨️ 리포트 인쇄 / PDF</button>
+      <button class="bre" onclick="doRestart()">↺ 새 검사</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var SECS=[
+  {id:'ori',name:'지남력',icon:'📅',desc:'시간·장소·사람을 인식하는 능력',color:'#0891b2',bg:'#e0f7fa',max:5,qs:[
+    {t:'c',ins:'지남력 (시간)',txt:'오늘은 몇 년도인가요?',opts:['2024년','2025년','2026년','2027년'],ans:2},
+    {t:'c',ins:'지남력 (시간)',txt:'지금은 어느 계절인가요?',opts:['봄','여름','가을','겨울'],ans:0},
+    {t:'c',ins:'지남력 (시간)',txt:'오늘은 무슨 요일인가요?',opts:['월요일','화요일','수요일','목요일','금요일','토요일','일요일'],ans:1},
+    {t:'inp',ins:'지남력 (장소)',txt:'지금 계신 시/도는?\n(예: 서울, 경기, 부산)',ph:'시/도 입력',free:true},
+    {t:'c',ins:'지남력 (장소)',txt:'지금 계신 곳은?',opts:['집','병원','요양원','복지관','기타'],ans:-1,free:true},
+  ]},
+  {id:'reg',name:'기억 등록',icon:'📝',desc:'새 정보를 기억에 저장하는 능력',color:'#7c3aed',bg:'#f5f3ff',max:3,qs:[
+    {t:'mem3',ins:'기억 등록',txt:'다음 세 단어를 기억해 주세요',words:['꽃','기차','야구공']},
+  ]},
+  {id:'att',name:'주의력·계산',icon:'🔢',desc:'집중력과 계산 능력',color:'#d97706',bg:'#fef3c7',max:5,qs:[
+    {t:'c',ins:'100에서 7씩 빼기',txt:'100 - 7 = ?',opts:['90','93','95','97'],ans:1},
+    {t:'c',ins:'계속 7씩 빼세요',txt:'93 - 7 = ?',opts:['84','86','88','90'],ans:1},
+    {t:'c',ins:'계속 7씩 빼세요',txt:'86 - 7 = ?',opts:['77','79','81','83'],ans:1},
+    {t:'c',ins:'계속 7씩 빼세요',txt:'79 - 7 = ?',opts:['68','70','72','74'],ans:1},
+    {t:'c',ins:'계속 7씩 빼세요',txt:'72 - 7 = ?',opts:['63','65','67','69'],ans:1},
+  ]},
+  {id:'rec',name:'기억 회상',icon:'🔍',desc:'저장된 기억을 떠올리는 능력',color:'#be123c',bg:'#fff1f2',max:3,qs:[
+    {t:'rec3',ins:'기억 회상',txt:'아까 기억하신 세 단어를 말씀해 주세요',words:['꽃','기차','야구공']},
+  ]},
+  {id:'lng',name:'언어',icon:'💬',desc:'언어를 이해하고 표현하는 능력',color:'#15803d',bg:'#dcfce7',max:5,qs:[
+    {t:'c',ins:'이름 대기',txt:'✏️ 이것은 무엇인가요?',opts:['볼펜','연필','지우개','색연필'],ans:1},
+    {t:'c',ins:'이름 대기',txt:'⌚ 이것은 무엇인가요?',opts:['반지','팔찌','시계','목걸이'],ans:2},
+    {t:'c',ins:'3단계 명령',txt:'"종이를 집어서, 반으로 접고, 제게 주세요" — 할 수 있나요?',opts:['3가지 모두','2가지','1가지만','어려워요'],ans:0},
+    {t:'c',ins:'읽고 따르기',txt:'"눈을 감으세요" — 이 문장을 보고 눈을 감을 수 있나요?',opts:['네, 할 수 있어요','어려워요'],ans:0},
+    {t:'c',ins:'문장 만들기',txt:'문장을 하나 말씀하실 수 있나요?',opts:['네, 할 수 있어요','어려워요'],ans:0},
+  ]},
+  {id:'vis',name:'시공간',icon:'🔷',desc:'도형을 보고 그리는 능력',color:'#0e7490',bg:'#e0f2fe',max:2,qs:[
+    {t:'c',ins:'도형 그리기',txt:'겹치는 오각형 2개를 그릴 수 있나요?',opts:['명확하게','대략','어렵지만 시도','어려워요'],ans:0},
+    {t:'c',ins:'시계 그리기',txt:'시계를 그리고 11시 10분을 표시할 수 있나요?',opts:['정확하게','대략','시계만 가능','어려워요'],ans:0},
+  ]},
+];
+
+var CG_QS=[
+  {txt:'최근 6개월 내 같은 말을 반복하거나 같은 질문을 자주 하나요?',w:2},
+  {txt:'날짜, 요일, 약속을 자주 잊어버리나요?',w:2},
+  {txt:'가스불 끄기, 문 잠그기 등을 잊는 경우가 있나요?',w:2},
+  {txt:'평소 잘 다니던 길에서 헤맨 적이 있나요?',w:3},
+  {txt:'성격이나 행동이 예전과 달라졌나요?',w:2},
+  {txt:'물건 이름이나 사람 이름을 자주 잊어버리나요?',w:2},
+  {txt:'혼자 일상생활(요리,청소,대중교통)을 하기 어려워하나요?',w:3},
+];
+
+var GR=[
+  {min:85,label:'정상',cls:'g1',emoji:'🟢',color:'#4ade80',desc:'인지기능과 뇌파 상태가 연령 대비 정상 범위입니다. 정기적인 관리를 권장합니다.'},
+  {min:70,label:'양호',cls:'g2',emoji:'🔵',color:'#60a5fa',desc:'대부분의 영역이 양호하나 일부 주의가 필요합니다. 6개월 후 재검사를 권장합니다.'},
+  {min:55,label:'주의',cls:'g3',emoji:'🟡',color:'#fbbf24',desc:'일부 인지 영역에서 저하가 관찰됩니다. 전문의 상담을 권고합니다.'},
+  {min:40,label:'경각',cls:'g4',emoji:'🟠',color:'#fb923c',desc:'여러 인지 영역에서 유의미한 저하가 있습니다. 3개월 내 전문의 방문을 강력 권고합니다.'},
+  {min:0, label:'위험',cls:'g5',emoji:'🔴',color:'#f87171',desc:'인지기능 저하가 심각합니다. 즉시 신경과·정신건강의학과 전문의 상담이 필요합니다.'},
+];
+
+var mode='eeg',utype='self',pInfo={},cSec=0,cQ=0,answered=false;
+var scores={},secScores={},cgQ=0,cgAns=[],cgRisk=0,recWords=[];
+var cogSc=0,eegSc=0,eegDone=false;
+var totalQ=SECS.reduce(function(t,s){return t+s.qs.length;},0);
+SECS.forEach(function(s){scores[s.id]=0;secScores[s.id]=0;});
+
+function go(id){document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+function selMode(m){
+  mode=m;
+  document.getElementById('mEeg').classList.toggle('sel',m==='eeg');
+  document.getElementById('mCog').classList.toggle('sel',m==='cog');
+}
+function selUser(u){
+  utype=u;
+  document.getElementById('uSelf').classList.toggle('sel',u==='self');
+  document.getElementById('uBoth').classList.toggle('sel',u==='both');
+}
+
+function goStart(){
+  var nm=document.getElementById('iName').value.trim();
+  var ag=document.getElementById('iAge').value;
+  if(!nm||!ag){alert('이름과 나이를 입력해주세요!');return;}
+  if(parseInt(ag)<45){alert('이 검사는 45세 이상을 대상으로 합니다.');return;}
+  pInfo={name:nm,age:ag,gender:document.getElementById('iGender').value,cg:document.getElementById('iCG').value.trim(),ex:document.getElementById('iEx').value.trim(),date:new Date().toLocaleDateString('ko-KR')};
+  cSec=0;cQ=0;cgQ=0;answered=false;
+  SECS.forEach(function(s){scores[s.id]=0;secScores[s.id]=0;});
+  cgAns=[];cgRisk=0;recWords=[];cogSc=0;eegSc=0;eegDone=false;
+  go('page-test');
+  loadQ();
+}
+
+function loadQ(){
+  if(utype==='both'&&cSec>=SECS.length){loadCgQ();return;}
+  if(cSec>=SECS.length){buildReport();return;}
+  var sec=SECS[cSec],q=sec.qs[cQ];
+  answered=false;
+  var gi=0;for(var i=0;i<cSec;i++)gi+=SECS[i].qs.length;gi+=cQ+1;
+  var gt=utype==='both'?totalQ+CG_QS.length:totalQ;
+  document.getElementById('secNm').textContent=sec.name;
+  document.getElementById('progTx').textContent=gi+'/'+gt;
+  document.getElementById('pFill').style.width=(gi/gt*100)+'%';
+  document.getElementById('banWrap').innerHTML='<div class="sb"><div class="si-ico">'+sec.icon+'</div><div><div class="si-nm">'+sec.name+'</div><div class="si-dc">'+sec.desc+'</div></div></div>';
+  document.getElementById('qNum').textContent=sec.name+' · 문항 '+(cQ+1);
+  document.getElementById('qInstr').textContent=q.ins;
+  document.getElementById('qTxt').textContent=q.txt;
+  document.getElementById('qFb').style.display='none';
+  document.getElementById('btnN').disabled=true;
+  var el=document.getElementById('qOpts');el.innerHTML='';
+  if(q.t==='c')doChoice(q,el,sec);
+  else if(q.t==='inp')doInput(q,el,sec);
+  else if(q.t==='mem3')doMem3(el);
+  else if(q.t==='rec3')doRec3(q,el);
+  var card=document.getElementById('qCard');card.style.animation='none';void card.offsetHeight;card.style.animation='';
+}
+
+function doChoice(q,el,sec){
+  el.className='opts';
+  var L=['①','②','③','④','⑤','⑥','⑦'];
+  q.opts.forEach(function(opt,i){
+    var btn=document.createElement('button');btn.className='ob';
+    btn.innerHTML='<span class="ol">'+L[i]+'</span>'+opt;
+    if(q.free){btn.onclick=function(){el.querySelectorAll('.ob').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');document.getElementById('btnN').disabled=false;answered=true;};}
+    else{btn.onclick=function(){pickOpt(i,q.ans,btn,el,sec);};}
+    el.appendChild(btn);
+  });
+}
+function doInput(q,el,sec){
+  var inp=document.createElement('input');inp.type='text';inp.className='sa';inp.placeholder=q.ph||'답을 입력하세요';
+  inp.oninput=function(){if(inp.value.trim()&&!answered){answered=true;scores[sec.id]++;secScores[sec.id]++;document.getElementById('btnN').disabled=false;}};
+  el.appendChild(inp);
+}
+function doMem3(el){
+  el.innerHTML='<div style="background:var(--navy);color:white;border-radius:11px;padding:18px;text-align:center;"><div style="font-size:0.68rem;letter-spacing:2px;opacity:0.4;margin-bottom:10px;">기억할 단어</div><div style="display:flex;justify-content:center;gap:18px;font-size:1.2rem;font-weight:900;margin-bottom:10px;">🌸 꽃 &nbsp; 🚂 기차 &nbsp; ⚾ 야구공</div><div style="font-size:0.7rem;opacity:0.38;">나중에 다시 물어볼게요</div></div><div style="margin-top:10px;font-size:0.75rem;color:var(--dim);text-align:center;">기억하셨으면 "다음"을 눌러주세요</div>';
+  document.getElementById('btnN').disabled=false;answered=true;
+}
+function doRec3(q,el){
+  var h='<div style="display:flex;flex-direction:column;gap:8px;">';
+  q.words.forEach(function(_,i){h+='<div style="display:flex;align-items:center;gap:8px;"><span style="font-size:0.74rem;color:var(--dim);width:22px;">'+(i+1)+'.</span><input type="text" class="sa" id="rw'+i+'" placeholder="단어 '+(i+1)+'" oninput="chkRec()" style="flex:1"></div>';});
+  h+='</div>';el.innerHTML=h;
+}
+function chkRec(){
+  var words=['꽃','기차','야구공'];
+  recWords=words.map(function(_,i){var e=document.getElementById('rw'+i);return e?e.value.trim():'';});
+  if(recWords.some(function(w){return w.length>0;}))document.getElementById('btnN').disabled=false;
+}
+function pickOpt(idx,ans,btn,el,sec){
+  if(answered)return;answered=true;
+  var ok=(idx===ans);
+  if(ok){scores[sec.id]++;secScores[sec.id]++;}
+  el.querySelectorAll('.ob').forEach(function(b,i){b.onclick=null;if(i===ans&&ans>=0)b.classList.add('ok');else if(b===btn&&!ok)b.classList.add('ng');});
+  var fb=document.getElementById('qFb');
+  if(ans>=0){var opts=el.querySelectorAll('.ob');var at=opts[ans]?opts[ans].textContent.replace(/[①②③④⑤⑥⑦]/,'').trim():'';fb.textContent=ok?'✓ 정답입니다':'정답: '+at;fb.className='fb '+(ok?'ok':'ng');fb.style.display='block';}
+  document.getElementById('btnN').disabled=false;
+}
+
+// 보호자
+var CG_QS=CG_QS||[];
+function loadCgQ(){
+  if(cgQ>=CG_QS.length){calcCg();buildReport();return;}
+  var q=CG_QS[cgQ];answered=false;
+  var tot=totalQ+CG_QS.length,cur=totalQ+cgQ+1;
+  document.getElementById('secNm').textContent='보호자 관찰';
+  document.getElementById('progTx').textContent=cur+'/'+tot;
+  document.getElementById('pFill').style.width=(cur/tot*100)+'%';
+  document.getElementById('banWrap').innerHTML='<div class="cb"><div class="si-ico">👨‍👩‍👧</div><div><div class="si-nm">보호자 관찰 항목</div><div class="si-dc">보호자분께서 응답해 주세요</div></div></div>';
+  document.getElementById('qNum').textContent='보호자 관찰 · '+(cgQ+1);
+  document.getElementById('qInstr').textContent='지난 6개월간 관찰한 내용을 바탕으로 응답해 주세요';
+  document.getElementById('qTxt').textContent=q.txt;
+  document.getElementById('qFb').style.display='none';
+  document.getElementById('btnN').disabled=true;
+  var el=document.getElementById('qOpts');el.innerHTML='';el.className='opts';
+  var os=['자주 그렇다','가끔 그렇다','거의 없다','전혀 없다'];
+  var ws=[q.w,Math.round(q.w*0.5),0,0];
+  var L=['①','②','③','④'];
+  os.forEach(function(opt,i){
+    var btn=document.createElement('button');btn.className='ob';
+    btn.innerHTML='<span class="ol">'+L[i]+'</span>'+opt;
+    btn.onclick=function(){el.querySelectorAll('.ob').forEach(function(b){b.classList.remove('sel');});btn.classList.add('sel');cgAns[cgQ]={txt:q.txt,ans:opt,w:ws[i]};document.getElementById('btnN').disabled=false;answered=true;};
+    el.appendChild(btn);
+  });
+  var card=document.getElementById('qCard');card.style.animation='none';void card.offsetHeight;card.style.animation='';
+}
+function calcCg(){cgRisk=cgAns.reduce(function(t,a){return t+(a?a.w:0);},0);}
+
+function nextQ(){
+  var sec=SECS[cSec];
+  if(sec&&sec.qs[cQ]&&sec.qs[cQ].t==='rec3'){
+    var ws=['꽃','기차','야구공'];var rc=0;
+    ws.forEach(function(w,i){if(recWords[i]&&recWords[i].indexOf(w)>=0)rc++;});
+    scores[sec.id]=rc;secScores[sec.id]=rc;
+  }
+  if(utype==='both'&&cSec>=SECS.length){cgQ++;loadCgQ();return;}
+  cQ++;
+  if(cSec<SECS.length&&cQ>=SECS[cSec].qs.length){cSec++;cQ=0;}
+  if(utype==='both'&&cSec>=SECS.length)loadCgQ();
+  else if(cSec>=SECS.length)buildReport();
+  else loadQ();
+}
+function skipQ(){if(utype==='both'&&cSec>=SECS.length){cgQ++;loadCgQ();}else nextQ();}
+
+// 리포트
+function getGr(t){for(var i=0;i<GR.length;i++)if(t>=GR[i].min)return GR[i];return GR[GR.length-1];}
+
+function updCard(){
+  var tot=Math.round(cogSc+eegSc),gr=getGr(tot);
+  var c=2*Math.PI*40,fill=document.getElementById('gFill');
+  if(fill){fill.style.stroke=gr.color;fill.style.strokeDashoffset=c-(tot/100)*c;}
+  document.getElementById('gNum').textContent=tot;
+  var b=document.getElementById('gBadge');b.className='gb '+gr.cls;b.textContent=gr.emoji+' '+gr.label;
+  document.getElementById('gDesc').textContent=gr.desc;
+  var mc=mode==='eeg'?70:100;
+  setTimeout(function(){
+    document.getElementById('cogBar').style.width=Math.round(cogSc/mc*100)+'%';
+    document.getElementById('cogPt').textContent=Math.round(cogSc)+'pt';
+    if(mode==='eeg'){document.getElementById('eegBar').style.width=eegDone?Math.round(eegSc/30*100)+'%':'0%';document.getElementById('eegPt').textContent=eegDone?Math.round(eegSc)+'pt':'--';}
+  },100);
+  document.getElementById('ePend').style.display=(mode==='eeg'&&!eegDone)?'block':'none';
+  for(var i=1;i<=5;i++){var el=document.getElementById('gb'+i);if(el)el.classList.toggle('act',i===GR.indexOf(gr)+1);}
+  if(tot<40||(utype==='both'&&cgRisk>=8)){document.getElementById('urgBox').style.display='block';document.getElementById('urgDesc').textContent='종합 점수가 위험 단계이거나 보호자 관찰에서 위험 신호가 감지되었습니다. 치매상담콜센터(1899-9988) 또는 신경과 전문의에게 연락하시기 바랍니다.';}
+}
+
+function buildReport(){
+  go('page-report');
+  var raw=Object.values(scores).reduce(function(a,b){return a+b;},0);
+  var mx=23;
+  cogSc=mode==='eeg'?Math.round(raw/mx*70):Math.round(raw/mx*100);
+  eegSc=0;eegDone=false;
+  var ml=mode==='eeg'?'뇌파+인지 통합':'순수 인지검사';
+  document.getElementById('rTitle').textContent=pInfo.name+' 종합 인지 리포트';
+  document.getElementById('rMeta').textContent='검사일: '+pInfo.date+' · '+pInfo.age+'세 '+pInfo.gender+' · 모드: '+ml+' · 검사자: '+(pInfo.ex||'-');
+  document.getElementById('cogLbl').textContent=mode==='eeg'?'인지검사 (70%)':'인지검사 (100%)';
+  document.getElementById('eegBi').style.display=mode==='cog'?'none':'block';
+  document.getElementById('eSec').style.display=mode==='cog'?'none':'block';
+  setTimeout(function(){updCard();},200);
+  var domEl=document.getElementById('domSec');domEl.innerHTML='';
+  SECS.forEach(function(sec){
+    var r=secScores[sec.id]||0,m=sec.max,p=Math.round(r/m*100);
+    var lv,lc,lb;if(p>=80){lv='양호';lc='#166534';lb='#dcfce7';}else if(p>=50){lv='주의';lc='#92400e';lb='#fef3c7';}else{lv='저하';lc='#9f1239';lb='#fff1f2';}
+    var card=document.createElement('div');card.className='dc';
+    card.innerHTML='<div class="dt"><div class="di" style="background:'+sec.bg+'">'+sec.icon+'</div><div style="flex:1"><div class="dn">'+sec.name+'</div><div class="ds">'+sec.desc+'</div></div><span class="dlv" style="color:'+lc+';background:'+lb+'">'+lv+'</span></div><div class="dbar"><div class="dbg"><div class="dbf" style="width:0%;background:'+sec.color+'" data-w="'+p+'%"></div></div><div class="dsc" style="color:'+sec.color+'">'+r+'/'+m+'</div></div>';
+    domEl.appendChild(card);
+  });
+  setTimeout(function(){document.querySelectorAll('.dbf').forEach(function(b){b.style.width=b.dataset.w;});},400);
+  if(utype==='both'&&cgAns.length>0){
+    document.getElementById('cgRes').style.display='block';
+    var cb=document.getElementById('cgBody');
+    cb.innerHTML=cgAns.map(function(a){if(!a)return '';var c=a.w>=2?'#be123c':a.w>=1?'#d97706':'#15803d';return '<div class="ci"><div class="cdot" style="background:'+c+'"></div><div><strong style="color:'+c+'">'+a.ans+'</strong> — '+a.txt+'</div></div>';}).join('');
+    var rt=cgRisk>=8?'⚠️ 고위험':cgRisk>=4?'💡 주의 필요':'✅ 정상 범위';
+    cb.innerHTML+='<div style="margin-top:9px;padding:8px 12px;background:rgba(124,58,237,0.08);border-radius:8px;font-size:0.75rem;font-weight:700;color:#7c3aed;">보호자 관찰 위험도: '+rt+' (점수: '+cgRisk+')</div>';
+  }
+  buildRec(raw);
+  setTimeout(function(){initG();},600);
+}
+
+function buildRec(raw){
+  var tot=Math.round(cogSc+eegSc);
+  var items=[];
+  if(tot>=70){items=[{i:'🧠',n:'뇌 건강 유지 훈련',d:'NeuroCheck 뇌훈련 게임 + 뉴로피드백으로 현재 인지 수준을 유지하세요.'},{i:'🎵',n:'음악 활동',d:'피아노 연주, 노래 부르기 등 음악 활동이 인지 유지에 효과적입니다.'},{i:'🚶',n:'규칙적인 유산소 운동',d:'걷기, 수영 등 유산소 운동은 뇌 혈류를 증가시킵니다.'},{i:'📅',n:'연 1회 정기 스크리닝',d:'이 검사를 연 1회 반복하여 변화를 모니터링하세요.'}];}
+  else if(tot>=55){items=[{i:'🏥',n:'신경과 전문의 상담 권고',d:'경도인지장애는 조기 개입 시 진행을 늦출 수 있습니다. 3개월 내 전문의 상담을 권고합니다.'},{i:'🧠',n:'집중적 뉴로피드백 훈련',d:'주 3회 이상 NeuroCheck 뇌훈련으로 인지 기능 유지를 시도하세요.'},{i:'💊',n:'치매안심센터 연계',d:'치매안심센터(1899-9988)에서 무료 정밀 검사와 지원 프로그램을 받을 수 있습니다.'}];}
+  else{items=[{i:'🚨',n:'즉시 전문의 상담 강력 권고',d:'신경과 또는 정신건강의학과를 가능한 빨리 방문하세요. 치매상담콜센터: 1899-9988'},{i:'🏥',n:'정밀 신경심리검사',d:'전문 의료기관에서 MRI, 혈액검사 등 정밀 검사를 받으세요.'},{i:'👨‍👩‍👧',n:'보호자 지원 강화',d:'일상생활 안전 관리와 보호자 지원 네트워크 구축이 필요합니다.'},{i:'📞',n:'치매안심센터 등록',d:'치매안심센터에 등록하면 무료 돌봄 서비스와 의료 지원을 받을 수 있습니다.'}];}
+  document.getElementById('recList').innerHTML=items.map(function(it){return '<div class="ri"><span class="ricon">'+it.i+'</span><div><div class="rn">'+it.n+'</div><div class="rd">'+it.d+'</div></div></div>';}).join('');
+}
+
+function doEEG(){
+  var hz=parseFloat(document.getElementById('eHz').value);
+  var uv=parseFloat(document.getElementById('eUv').value);
+  var co=parseFloat(document.getElementById('eCoh').value);
+  if(isNaN(hz)&&isNaN(uv)&&isNaN(co)){alert('뇌파 수치를 하나 이상 입력해주세요!');return;}
+  var hs=!isNaN(hz)?(hz>=9&&hz<=11?10:hz>=8?8:hz>11&&hz<=13?7:hz>=7?4:1):10;
+  var us=!isNaN(uv)?(uv>=3&&uv<=8?10:uv>=2?7:uv>8&&uv<=12?7:uv>=1?4:1):10;
+  var cs=!isNaN(co)?(co>=0.9?10:co>=0.8?8:co>=0.7?6:co>=0.6?4:1):10;
+  var en=[!isNaN(hz),!isNaN(uv),!isNaN(co)].filter(Boolean).length;
+  var re=(!isNaN(hz)?hs:0)+(!isNaN(uv)?us:0)+(!isNaN(co)?cs:0);
+  eegSc=Math.round(re/(en*10)*30);eegDone=true;updCard();
+  var tot=Math.round(cogSc+eegSc),gr=getGr(tot);
+  var ins=[{io:gr.emoji,ix:'<strong>종합 점수 '+tot+'점 — '+gr.label+'</strong> · 인지 '+Math.round(cogSc)+'pt + 뇌파 '+Math.round(eegSc)+'pt'}];
+  if(!isNaN(hz)){if(hz<7)ins.push({io:'🔴',ix:'<strong>Peak α 심각 저하 ('+hz+'Hz)</strong> — 7Hz 미만은 치매 진행과 강한 연관성이 있습니다.'});else if(hz<9)ins.push({io:'🟡',ix:'<strong>Peak α 저하 ('+hz+'Hz)</strong> — 경도인지장애와 연관될 수 있습니다.'});else ins.push({io:'🟢',ix:'<strong>Peak α 정상 ('+hz+'Hz)</strong> — 뇌 기본 리듬이 안정적입니다.'});}
+  if(!isNaN(uv)){if(uv<2)ins.push({io:'🔴',ix:'<strong>알파 세기 심각 감소 ('+uv+'μV)</strong> — 뇌 활성도 저하와 연관됩니다.'});else if(uv<3)ins.push({io:'🟡',ix:'<strong>알파 세기 감소 ('+uv+'μV)</strong> — 정상 범위(3~8μV) 아래입니다.'});else ins.push({io:'🟢',ix:'<strong>알파 세기 정상 ('+uv+'μV)</strong> — 뇌 활성 상태가 양호합니다.'});}
+  if(!isNaN(co)){if(co<0.6)ins.push({io:'🔴',ix:'<strong>Coherence 심각 저하 ('+co+')</strong> — 알츠하이머형 치매에서 자주 관찰됩니다.'});else if(co<0.8)ins.push({io:'🟡',ix:'<strong>Coherence 저하 ('+co+')</strong> — 뇌 동기화가 다소 낮습니다.'});else ins.push({io:'🟢',ix:'<strong>Coherence 양호 ('+co+')</strong> — 좌우 뇌 동기화가 잘 유지되고 있습니다.'});}
+  var sec=document.getElementById('igSec');
+  document.getElementById('igList').innerHTML=ins.map(function(x){return '<div class="ii"><span class="io">'+x.io+'</span><div class="ix">'+x.ix+'</div></div>';}).join('');
+  sec.style.display='block';sec.scrollIntoView({behavior:'smooth'});
+}
+
+function doRestart(){
+  document.getElementById('urgBox').style.display='none';
+  document.getElementById('igSec').style.display='none';
+  document.getElementById('cgRes').style.display='none';
+  go('page-start');
+}
+
+// 게임
+var cGame='mem',gSt={};
+function swGame(nm,btn){cGame=nm;gSt={};document.querySelectorAll('.gtab').forEach(function(t){t.classList.remove('act');});btn.classList.add('act');rGame();}
+function rGame(){var ar=document.getElementById('gArea');if(!ar)return;var G={mem:rMem,str:rStr,sim:rSim,spt:rSpt,cal:rCal};(G[cGame]||rMem)();}
+
+// 숫자기억
+function rMem(){var ar=document.getElementById('gArea'),st=gSt;if(!st.ph){st.ph='s';st.lv=3;st.sc=0;st.lf=3;}
+  if(st.ph==='s'){ar.innerHTML='<div class="glv">🔢 숫자 기억</div><div class="gsb" style="width:100%"><span>레벨 <span class="gsv">'+st.lv+'</span></span><span>점수 <span class="gsv">'+st.sc+'</span></span><span>❤️ <span class="gsv">'+st.lf+'</span></span></div><div class="gms">숫자를 보여드립니다. 기억한 후 입력하세요!</div><button class="gbtn" data-action="mShow">시작 ▶</button>';}
+  else if(st.ph==='sh'){var ns=Array.from({length:st.lv},function(){return Math.floor(Math.random()*9)+1;});st.ans=ns.join('');var i=0;ar.innerHTML='<div class="glv">레벨 '+st.lv+'</div><div class="gdp" id="mD">준비...</div><div class="gms" id="mM">집중하세요!</div>';var sh=function(){if(i<ns.length){var e=document.getElementById('mD');if(e)e.textContent=ns[i];i++;setTimeout(sh,900);}else{var e2=document.getElementById('mD');if(e2)e2.textContent='?';var m=document.getElementById('mM');if(m)m.textContent='입력하세요!';ar.innerHTML+='<input class="ginp" id="mI" type="number" placeholder="숫자 입력" autofocus><div><button class="gbtn" data-action="mChk">확인</button></div>';st.ph='in';}};setTimeout(sh,600);}
+  else if(st.ph==='r'){var ok=st.ok;ar.innerHTML='<div class="glv">레벨 '+st.lv+'</div><div class="gsb" style="width:100%"><span>점수 <span class="gsv">'+st.sc+'</span></span><span>❤️ <span class="gsv">'+st.lf+'</span></span></div><div class="gdp" style="font-size:2.2rem">'+(ok?'✅':'❌')+'</div><div class="'+(ok?'gok':'gng')+'">'+(ok?'정답! 🎉':'정답: '+st.ans)+'</div><div style="display:flex;margin-top:12px">'+(st.lf>0?'<button class="gbtn" data-action="mNx" data-up="'+ok+'">다음 ▶</button>':'<button class="gbtn" data-action="mRs">다시 시작</button>')+'</div>';}}
+function mShow(){gSt.ph='sh';rMem();}
+function mChk(){var v=document.getElementById('mI')&&document.getElementById('mI').value.trim();if(!v)return;var ok=(v===gSt.ans);gSt.ok=ok;if(ok)gSt.sc+=gSt.lv*10;else gSt.lf--;gSt.ph='r';rMem();}
+function mNx(up){if(up&&gSt.lv<8)gSt.lv++;else if(!up&&gSt.lv>3)gSt.lv--;gSt.ph='sh';rMem();}
+function mRs(){gSt={};rMem();}
+
+// 스트룹
+var SC=[{n:'빨강',c:'#ef4444'},{n:'파랑',c:'#3b82f6'},{n:'초록',c:'#22c55e'},{n:'노랑',c:'#eab308'}];
+function rStr(){var ar=document.getElementById('gArea'),st=gSt;if(!st.sc){st.sc=0;st.rn=0;st.mx=10;st.co=0;}
+  if(st.rn>=st.mx){ar.innerHTML='<div class="glv">🎨 완료!</div><div class="gdp" style="font-size:2.2rem">🏆</div><div style="font-size:1.1rem;font-weight:900;color:var(--navy)">'+st.co+'/'+st.mx+'</div><div class="gms">정답률 '+Math.round(st.co/st.mx*100)+'%</div><button class="gbtn" onclick="sRs()">다시 하기</button>';return;}
+  var wi=Math.floor(Math.random()*4),ci=Math.floor(Math.random()*4);st.wi=wi;st.ci=ci;
+  ar.innerHTML='<div class="glv">🎨 스트룹 · '+(st.rn+1)+'/'+st.mx+'</div><div class="gsb" style="width:100%"><span>점수 <span class="gsv">'+st.sc+'</span></span><span>정답 <span class="gsv">'+st.co+'/'+st.rn+'</span></span></div><div class="gms" style="margin-bottom:4px">글자의 <strong>색깔</strong>을 선택하세요</div><div class="swrd" style="color:'+SC[ci].c+'">'+SC[wi].n+'</div><div class="sopts">'+SC.map(function(c,i){return '<button class="sbtn" style="background:'+c.c+'22;border-color:'+c.c+';color:'+c.c+'" onclick="sAns('+i+')">'+c.n+'</button>';}).join('')+'</div>';}
+function sAns(i){var st=gSt,ok=(i===st.ci);if(ok){st.sc+=20;st.co++;}st.rn++;document.querySelectorAll('.sbtn').forEach(function(b,j){b.onclick=null;if(j===st.ci)b.style.outline='3px solid '+SC[j].c;if(j===i&&!ok)b.style.opacity='0.4';});setTimeout(function(){rStr();},600);}
+function sRs(){gSt={};rStr();}
+
+// 사이먼
+var SIM=[{c:'#ef4444',l:'#fca5a5',e:'🔴'},{c:'#3b82f6',l:'#93c5fd',e:'🔵'},{c:'#22c55e',l:'#86efac',e:'🟢'},{c:'#eab308',l:'#fde047',e:'🟡'}];
+function rSim(){var ar=document.getElementById('gArea'),st=gSt;if(!st.sq){st.sq=[];st.lv=0;st.sc=0;st.ph='s';}
+  ar.innerHTML='<div class="glv">🔔 순서 기억 · 레벨 '+st.lv+'</div><div class="gsb" style="width:100%"><span>레벨 <span class="gsv">'+st.lv+'</span></span><span>점수 <span class="gsv">'+st.sc+'</span></span></div><div class="gms" id="simMsg">'+(st.ph==='s'?'순서를 보고 기억하세요!':'순서대로 누르세요!')+'</div><div class="simgrid" id="simG">'+SIM.map(function(c,i){return '<button class="simb" id="sB'+i+'" style="background:'+c.c+'" onclick="siP('+i+')">'+c.e+'</button>';}).join('')+'</div>'+(st.ph==='s'?'<button class="gbtn" onclick="siSt()">시작 ▶</button>':'');}
+function siSt(){var st=gSt;st.sq.push(Math.floor(Math.random()*4));st.us=[];st.ph='sh';siPl();}
+function siPl(){var st=gSt,i=0;document.getElementById('simMsg').textContent='잘 보세요...';document.querySelectorAll('.simb').forEach(function(b){b.style.pointerEvents='none';});var pl=function(){if(i>=st.sq.length){st.ph='in';st.us=[];document.getElementById('simMsg').textContent='순서대로 누르세요!';document.querySelectorAll('.simb').forEach(function(b){b.style.pointerEvents='auto';});return;}var idx=st.sq[i],btn=document.getElementById('sB'+idx);if(btn){btn.classList.add('lit');btn.style.background=SIM[idx].l;setTimeout(function(){btn.classList.remove('lit');btn.style.background=SIM[idx].c;i++;setTimeout(pl,300);},600);}};setTimeout(pl,500);}
+function siP(idx){var st=gSt;if(st.ph!=='in')return;st.us.push(idx);var btn=document.getElementById('sB'+idx);if(btn){btn.classList.add('lit');btn.style.background=SIM[idx].l;setTimeout(function(){btn.classList.remove('lit');btn.style.background=SIM[idx].c;},200);}var pos=st.us.length-1;if(st.us[pos]!==st.sq[pos]){st.ph='f';document.getElementById('simMsg').textContent='❌ 틀렸어요! '+st.lv+'단계 성공';document.querySelectorAll('.simb').forEach(function(b){b.style.pointerEvents='none';});document.getElementById('gArea').innerHTML+='<button class="gbtn" style="margin-top:9px" onclick="siRs()">다시 시작</button>';return;}if(st.us.length===st.sq.length){st.sc+=st.sq.length*10;st.lv++;document.getElementById('simMsg').textContent='✅ 정답! 다음...';document.querySelectorAll('.simb').forEach(function(b){b.style.pointerEvents='none';});setTimeout(function(){siSt();},1000);}}
+function siRs(){gSt={};rSim();}
+
+// 틀린그림
+var SPDS=[{items:['🍎','🍊','🍋','🍇','🍓','🍑','🍒','🥝'],diff:[2,'🫐']},{items:['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼'],diff:[4,'🐸']},{items:['⭐','🌙','☀️','🌈','⚡','❄️','🌸','🌺'],diff:[6,'🎃']},{items:['🚗','🚕','🚙','🚌','🚎','🏎️','🚐','🚑'],diff:[3,'✈️']},{items:['🎸','🎹','🎺','🎻','🥁','🪕','🎷','🪗'],diff:[1,'📱']}];
+function rSpt(){var ar=document.getElementById('gArea'),st=gSt;if(!st.sc){st.sc=0;st.rn=0;st.mx=5;}
+  if(st.rn>=st.mx){ar.innerHTML='<div class="glv">🔍 완료!</div><div class="gdp" style="font-size:2.2rem">🏆</div><div style="font-size:1.1rem;font-weight:900;color:var(--navy)">'+st.sc+'점</div><div class="gms">'+(st.sc>=400?'완벽해요! 🎉':st.sc>=200?'잘 하셨어요!':'꾸준히 연습해보세요!')+'</div><button class="gbtn" onclick="spRs()">다시 하기</button>';return;}
+  var set=SPDS[st.rn%SPDS.length],rt=[].concat(set.items);rt[set.diff[0]]=set.diff[1];st.di=set.diff[0];st.ad=false;
+  ar.innerHTML='<div class="glv">🔍 틀린 그림 · '+(st.rn+1)+'/'+st.mx+'</div><div class="gsb" style="width:100%"><span>점수 <span class="gsv">'+st.sc+'</span></span></div><div class="gms" style="margin-bottom:10px">오른쪽에서 <strong>다른 그림</strong>을 찾아 클릭하세요!</div><div class="spgrid"><div class="spp"><div class="sppt">원본</div><div class="spitems">'+set.items.map(function(e){return '<span class="spit">'+e+'</span>';}).join('')+'</div></div><div class="spp"><div class="sppt">찾아보세요 👀</div><div class="spitems">'+rt.map(function(e,i){return '<span class="spit" onclick="spCk('+i+',this)">'+e+'</span>';}).join('')+'</div></div></div>';}
+function spCk(i,el){var st=gSt;if(st.ad)return;st.ad=true;var ok=(i===st.di);el.classList.add(ok?'spok':'spng');if(ok)st.sc+=100;var m=document.querySelector('.gms');if(m)m.innerHTML=ok?'<span class="gok">✅ 찾았어요! +100점</span>':'<span class="gng">❌ 틀렸어요!</span>';setTimeout(function(){st.rn++;rSpt();},900);}
+function spRs(){gSt={};rSpt();}
+
+// 계산
+function rCal(){var ar=document.getElementById('gArea'),st=gSt;if(!st.ph){st.ph='s';st.sc=0;st.rn=0;st.mx=10;st.co=0;st.tl=10;}
+  if(st.rn>=st.mx){ar.innerHTML='<div class="glv">⚡ 완료!</div><div class="gdp" style="font-size:2.2rem">🏆</div><div style="font-size:1.1rem;font-weight:900;color:var(--navy)">'+st.co+'/'+st.mx+'</div><div class="gms">점수: '+st.sc+'점</div><button class="gbtn" onclick="caRs()">다시 하기</button>';return;}
+  if(st.ph==='s'){ar.innerHTML='<div class="glv">⚡ 계산 속도</div><div class="gms">10초 안에 계산하세요!<br>10문제 도전!</div><button class="gbtn" onclick="caGo()">시작 ▶</button>';return;}
+  if(!st.q)caMkQ();
+  ar.innerHTML='<div class="glv">'+(st.rn+1)+'/'+st.mx+'</div><div class="gsb" style="width:100%"><span>점수 <span class="gsv">'+st.sc+'</span></span><span>정답 <span class="gsv">'+st.co+'</span></span><span id="caT">⏱ <span class="gsv">'+st.tl+'</span>초</span></div><div class="gdp">'+st.q.tx+'</div><input class="ginp" id="caI" type="number" placeholder="답 입력" onkeydown="if(event.key===\'Enter\')caChk()"><button class="gbtn" onclick="caChk()">확인</button>';
+  var inp=document.getElementById('caI');if(inp)inp.focus();
+  clearInterval(st.tmr);st.tl=10;
+  st.tmr=setInterval(function(){st.tl--;var t=document.getElementById('caT');if(t)t.innerHTML='⏱ <span class="gsv" style="color:'+(st.tl<=3?'#ef4444':'var(--navy)')+'">'+st.tl+'</span>초';if(st.tl<=0){clearInterval(st.tmr);st.rn++;st.q=null;rCal();}},1000);}
+function caMkQ(){var ops=['+','-','×'],op=ops[Math.floor(Math.random()*3)],a,b,ans;if(op==='+'){a=Math.floor(Math.random()*50)+10;b=Math.floor(Math.random()*50)+10;ans=a+b;}else if(op==='-'){a=Math.floor(Math.random()*50)+30;b=Math.floor(Math.random()*30)+5;ans=a-b;}else{a=Math.floor(Math.random()*9)+2;b=Math.floor(Math.random()*9)+2;ans=a*b;}gSt.q={tx:a+' '+op+' '+b+' = ?',answer:ans};}
+function caGo(){gSt.ph='p';rCal();}
+function caChk(){var st=gSt;clearInterval(st.tmr);var v=parseInt(document.getElementById('caI')&&document.getElementById('caI').value);var ok=(v===st.q.answer);if(ok){st.sc+=Math.max(10,st.tl*10);st.co++;}st.rn++;st.q=null;rCal();}
+function caRs(){clearInterval(gSt.tmr);gSt={};rCal();}
+
+function initG(){gSt={};cGame='mem';rGame();}
+
+// 이벤트 등록
+document.addEventListener('DOMContentLoaded', function() {
+  // 검사 시작
+  document.getElementById('goBtn').addEventListener('click', goStart);
+
+  // 모드 선택
+  document.getElementById('mEeg').addEventListener('click', function(){ selMode('eeg'); });
+  document.getElementById('mCog').addEventListener('click', function(){ selMode('cog'); });
+
+  // 응답자 선택
+  document.getElementById('uSelf').addEventListener('click', function(){ selUser('self'); });
+  document.getElementById('uBoth').addEventListener('click', function(){ selUser('both'); });
+
+  // 다음/건너뛰기
+  document.getElementById('btnN').addEventListener('click', nextQ);
+  document.getElementById('btnN').removeAttribute('onclick');
+  document.querySelector('.bsk').addEventListener('click', skipQ);
+  document.querySelector('.bsk').removeAttribute('onclick');
+
+  // 리포트 버튼
+  document.querySelector('.bpr').addEventListener('click', function(){ window.print(); });
+  document.querySelector('.bre').addEventListener('click', doRestart);
+
+  // 게임 탭 이벤트 위임
+  document.getElementById('gameTabs').addEventListener('click', function(e) {
+    var btn = e.target.closest('.gtab');
+    if (!btn) return;
+    var game = btn.dataset.game;
+    cGame = game; gSt = {};
+    document.querySelectorAll('.gtab').forEach(function(t){ t.classList.remove('act'); });
+    btn.classList.add('act');
+    rGame();
+  });
+
+  // 게임 영역 이벤트 위임 (동적 버튼)
+  document.getElementById('gArea').addEventListener('click', function(e) {
+    var btn = e.target.closest('button, .spit, .sbtn, .simb');
+    if (!btn) return;
+    var ac = btn.dataset.action;
+    if (ac === 'mShow') mShow();
+    else if (ac === 'mChk') mChk();
+    else if (ac === 'mNx') mNx(btn.dataset.up === 'true');
+    else if (ac === 'mRs') mRs();
+    else if (ac === 'sRs') sRs();
+    else if (ac === 'siSt') siSt();
+    else if (ac === 'siRs') siRs();
+    else if (ac === 'spRs') spRs();
+    else if (ac === 'caGo') caGo();
+    else if (ac === 'caChk') caChk();
+    else if (ac === 'caRs') caRs();
+    else if (btn.dataset.sAns !== undefined) sAns(parseInt(btn.dataset.sAns));
+    else if (btn.dataset.siP !== undefined) siP(parseInt(btn.dataset.siP));
+    else if (btn.dataset.spCk !== undefined) spCk(parseInt(btn.dataset.spCk), btn);
+  });
+});
+
+</script>
+</body>
+</html>
